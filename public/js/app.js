@@ -24,7 +24,7 @@ app.config(['$routeProvider', function($routeProvider) {
         })
         .when('/sustainable', {
             templateUrl: 'sustainable.html',
-            controller: 'FashionController'
+            controller: 'SustainableController'
         })
         .otherwise({
             redirectTo: '/home' // Redirect to the home page by default
