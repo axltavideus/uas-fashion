@@ -75,4 +75,10 @@ app.controller('HomeController', ['$scope', '$http', function($scope, $http) {
     };
 }]);
 
+app.controller('SustainableController', ['$scope', function($scope) {
+    $scope.message = 'Welcome to the Sustainable Fashion page!';
+}]);
 
+app.controller('FashionController', ['$scope', function($scope) {
+    $scope.message = 'Welcome to the Current Fashion Trends page!';
+}]);
