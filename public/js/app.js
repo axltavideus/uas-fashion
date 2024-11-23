@@ -1,0 +1,24 @@
+var app = angular.module('mvcApp', ['ngRoute']);
+
+app.config(['$routeProvider', function($routeProvider) {
+    $routeProvider
+        .when('/home', {
+            templateUrl: 'home.html',
+            controller: 'HomeController'
+        })
+        .when('/shop', {
+            templateUrl: 'shop.html',
+            controller: 'ShopController'
+        })
+        .when('/login', {
+            templateUrl: 'login.html',
+            controller: 'LoginController'
+        })
+        .when('/signup', {
+            templateUrl: 'signup.html',
+            controller: 'SignupController'
+        })
+        .otherwise({
+            redirectTo: '/home' // Redirect to the home page by default
+        });
+}]);

@@ -1,0 +1,82 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en" ng-app="mvcApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sustainable Fashion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    <script src="./js/app.js"></script>
+    <script src="./js/controller.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/ea2aef0f83.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="css/style-navbar.css">
+    <link rel="stylesheet" type="text/css" href="css/style-dampak.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" ng-show="!isLoginPage()">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#/"><img src="logo.png" alt="Logo" width="50"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item custom-nav-item"><a href="#"><i
+                                class="fa-solid fa-cart-shopping icon-large"></i></a></li> <!-- Shop icon -->
+                    <li class="nav-item dropdown custom-nav-item">
+                        <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Fashion
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#/">Dampak Fashion</a></li>
+                            <li><a class="dropdown-item" href="#/sustainable">Sustainable Fashion</a></li>
+                            <li><a class="dropdown-item" href="#/fashion">Fashion Sekarang</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item custom-nav-item"><a class="nav-link" href="#/shop">Shop</a></li>
+                    <li class="nav-item dropdown lng-container">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="fa-solid fa-globe icon-large-language"></i> <!-- Language -->
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Indonesia</a></li>
+                            <li><a class="dropdown-item" href="#">English</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item login-container"><a class="nav-link login-btn" href="#!/login">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div ng-view></div>
+
+    <footer class="footer text-white footer-container" style="background-color: #4b6b4b; padding: 10px 0;" ng-show="!isLoginPage()">
+        <div class="container d-flex justify-content-center align-items-center position-relative">
+            <!-- Language dropdown aligned to the left -->
+            <div class="position-absolute start-0 lng-container mt-4">
+                <li class="nav-item dropdown list-unstyled m-0">
+                    <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-globe"></i> English
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Indonesia</a></li>
+                        <li><a class="dropdown-item" href="#">English</a></li>
+                    </ul>
+                </li>
+            </div>
+    
+            <!-- Centered footer text -->
+            
+        </div>
+        <p class="mt-4 text-center">© 2024 Kelompok 4.</p>
+    </footer>
+</body>
+</html>

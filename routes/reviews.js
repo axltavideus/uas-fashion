@@ -1,5 +1,5 @@
 const express = require('express');
-const Review = require('../models/review');
+const Review = require('../models/reviews');
 const router = express.Router();
 
 // Submit a review

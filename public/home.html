@@ -1,0 +1,118 @@
+<!-- public/home.html -->
+<link rel="stylesheet" type="text/css" href="css/style-dampak.css">
+
+<div ng-controller="HomeController">
+    <!-- Hero Section -->
+    <div class="container-fluid">
+        <div class="background grid gap-5">
+            <h1 class="wrap-text judul g-col-6" style="width: 35%;">
+                Dampak produksi dan konsumsi fashion.
+            </h1>
+
+            <div class="container-fluid d-flex bawah-judul w-100 g-col-6">
+                <div class="row">
+                    <!-- First column -->
+                    <div class="col-md-4 bawah-judul">
+                        <h1 class="text-center ms-4 text-bawah-judul">20%</h1>
+                        <p class="wrap-text ms-4 text-center">
+                            of industrial water pollution comes from textile dyeing and finishing processes.
+                        </p>
+                    </div>
+                    <!-- Second column -->
+                    <div class="col-md-8 bawah-judul">
+                        <h1 class="text-center ms-4 text-bawah-judul">10%</h1>
+                        <p class="wrap-text ms-4 text-center">
+                            of global carbon emissions comes from the fashion industry.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carousel Section -->
+    <div class="container-fluid w-50 carousel-bawah">
+        <div id="carouselExample" class="carousel slide">
+            <div class="carousel-inner">
+                <!-- First Item -->
+                <div class="carousel-item active">
+                    <div class="card mb-3" style="min-width: 620px;">
+                        <div class="row g-0">
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Sustainable Practices</h5>
+                                    <p class="card-text">
+                                        Learn about sustainable practices that can reduce the environmental impact of fashion.
+                                    </p>
+                                    <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <img src="assets/about-1.jpg" class="img-fluid rounded-start" alt="Sustainable Practices">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Additional Items -->
+                <div class="carousel-item">
+                    <div class="card mb-3" style="min-width: 620px;">
+                        <div class="row g-0">
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Carbon Emissions</h5>
+                                    <p class="card-text">
+                                        The fashion industry contributes to global warming through excessive carbon emissions.
+                                    </p>
+                                    <p class="card-text"><small class="text-body-secondary">Last updated 5 mins ago</small></p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <img src="assets/about-2.jpg" class="img-fluid rounded-start" alt="Carbon Emissions">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev tombol-carousel" role="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next tombol-carousel" role="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="container">
+        <h1 class="text-center bawah-container text-bawah-judul">Hanya 1%</h1>
+        <h2 class="text-center">Pakaian bekas di daur ulang.</h2>
+    </div>
+
+    <!-- Alert Section -->
+    <div id="alert-container"></div>
+
+    <!-- Review Submission Form -->
+    <form ng-submit="submitReview()">
+        <div class="container bawah-container">
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="reviewName" class="form-label">Name</label>
+                        <input type="text" name="name" class="form-control" id="reviewName" placeholder="Name" ng-model="review.name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reviewText" class="form-label">Text</label>
+                        <textarea class="form-control" name="textarea" id="reviewText" rows="3" ng-model="review.text" required></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <div class="text-end">
+                            <button class="submit-button" type="submit">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

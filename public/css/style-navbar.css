@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap');
+
+html, body {
+    font-family: "Roboto Serif", serif;
+}
+
+a .icon-large {
+    font-size: 24px;
+    text-decoration: none;
+    color: black;
+    padding: 8px 10px 0px 0px;
+}
+a .icon-large-language {
+    font-size: 24px;
+    text-decoration: none;
+    color: black;
+}
+
+.custom-nav-item {
+    padding-right: 45px;
+}
+
+.login-btn {
+    background-color: #69B578; /* Green background */
+    padding: 8px 30px; /* Original padding */
+    border-radius: 50px; /* Makes it pill-shaped */
+    text-decoration: none; /* Removes underline */
+    display: inline-block; /* Keeps padding consistent */
+    min-width: 150px; /* Set the desired width */
+    text-align: center; /* Center the text */
+}
+
+.login-container{
+    margin-left: 25px;
+}
+
+.footer-container{
+    background-color: #526E48;
+    min-height: 75px;
+}
+
+.icon-large-language {
+    color: white;
+}
+
