@@ -82,3 +82,51 @@ app.controller('SustainableController', ['$scope', function($scope) {
 app.controller('FashionController', ['$scope', function($scope) {
     $scope.message = 'Welcome to the Current Fashion Trends page!';
 }]);
+
+app.controller('LoginController', function($scope, $http) {
+    $scope.credentials = {
+        email: '',
+        password: ''
+    };
+
+    $scope.login = function() {
+        $http.post('/api/auth/login', $scope.credentials)
+            .then(function(response) {
+                // Handle successful login
+                alert('Login successful!');
+            })
+            .catch(function(error) {
+                // Handle login error
+                alert('Login failed: ' + error.data.message);
+            });
+    };
+});
+
+app.controller('SignupController', function($scope, $http) {
+    $scope.credentials = {
+        email: '',
+        username: '',
+        password: '',
+        confirmPassword: '',
+    };
+
+    $scope.signup = function() {
+        // Check if passwords match
+        if ($scope.credentials.password !== $scope.credentials.confirmPassword) {
+            document.getElementById('error-message').innerHTML =
+                `<div class="alert alert-danger">Passwords do not match.</div>`;
+            return; // Stop further execution if passwords don't match
+        }
+
+        // Proceed to send signup data to the backend
+        $http.post('/api/auth/signup', $scope.credentials)
+            .then(function(response) {
+                alert('Signup successful! You can now log in.');
+                window.location.href = '#!/login'; // Redirect to login page
+            })
+            .catch(function(error) {
+                document.getElementById('error-message').innerHTML =
+                    `<div class="alert alert-danger">${error.data.message}</div>`;
+            });
+    };
+});
