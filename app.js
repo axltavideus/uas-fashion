@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
+const User = require('./models/user');
 
 dotenv.config();
 
@@ -22,11 +23,19 @@ mongoose.connect(MONGO_URI)
 
 // Routes
 app.use('/api/reviews', require('./routes/reviews'));
-app.use('/api/shops', require('./routes/shops'));
+app.use('/api/shops', require('./routes/shop'));
 app.use('/api/auth', require('./routes/auth'));
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/index.html'));
+});
+
+app.use(async (req, res, next) => {
+    if (req.user) {
+        const user = await User.findById(req.user._id);
+        req.user = user;
+    }
+    next();
 });
 
 app.get('/', (req, res) => {

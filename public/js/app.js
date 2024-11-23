@@ -30,3 +30,4 @@ app.config(['$routeProvider', function($routeProvider) {
             redirectTo: '/home' // Redirect to the home page by default
         });
 }]);
+
