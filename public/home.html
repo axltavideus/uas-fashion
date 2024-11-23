@@ -40,15 +40,19 @@
                         <div class="row g-0">
                             <div class="col-md-8">
                                 <div class="card-body">
-                                    <h5 class="card-title">Sustainable Practices</h5>
+                                    <h5 class="card-title">Konsumsi berlebihan terhadap Sumber Alam</h5>
                                     <p class="card-text">
-                                        Learn about sustainable practices that can reduce the environmental impact of fashion.
+                                        Untuk memproduksi tekstil yang dibutuhkan untuk membuat pakaian perlu banyak air dan lahan untuk menanam katun
+                                        dan serat lainnya. Menurut Europian Environment Agency (2023), sektor tekstil merupakan sumber degradasi air dan
+                                        lahan terbesar ketiga pada tahun 2020. Ditahun yang sama dibutuhkan rata-rata 9 meter kubik air, 400 meter
+                                        persegi tanah, dan 391 kilogram (kg) bahan mentah untuk menyediakan pakaian dan sepatu bagi setiap warga negara
+                                        UE.
                                     </p>
                                     <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <img src="assets/about-1.jpg" class="img-fluid rounded-start" alt="Sustainable Practices">
+                            <div class="col-md-4 ps-5 mt-3 mb-3">
+                                <img src="assets/homepage/euinfo.png" class="img-fluid ps-4 rounded-start gambar-carousel" alt="Sustainable Practices">
                             </div>
                         </div>
                     </div>
@@ -59,29 +63,35 @@
                         <div class="row g-0">
                             <div class="col-md-8">
                                 <div class="card-body">
-                                    <h5 class="card-title">Carbon Emissions</h5>
+                                    <h5 class="card-title">Polusi Air</h5>
                                     <p class="card-text">
-                                        The fashion industry contributes to global warming through excessive carbon emissions.
+                                        Produksi tekstil diperkirakan bertanggung jawab atas sekitar 20% polusi air bersih global akibat proses
+                                        pewarnaan dan finishing. Satu kali cucian pakaian poliester dapat melepaskan 700.000 serat mikroplastik yang
+                                        bisa masuk ke rantai makanan. Sebagian besar mikroplastik dari tekstil dilepaskan selama beberapa pencucian
+                                        pertama, sementara fast fashion mendorong pencucian awal dalam jumlah besar karena produksi massal dan harga
+                                        rendah. Setiap tahun, pencucian produk sintetis menyebabkan lebih dari setengah juta ton mikroplastik
+                                        menumpuk di dasar laut. Selain masalah global ini, polusi dari produksi pakaian juga berdampak buruk pada
+                                        kesehatan manusia, hewan, dan ekosistem di sekitar lokasi pabrik.
                                     </p>
                                     <p class="card-text"><small class="text-body-secondary">Last updated 5 mins ago</small></p>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <img src="assets/about-2.jpg" class="img-fluid rounded-start" alt="Carbon Emissions">
+                            <div class="col-md-4 mt-3">
+                                <img src="assets/homepage/tex_waterPoll.jpg" class="img-fluid pe-3 rounded-start gambar-carousel" alt="Carbon Emissions">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <a class="carousel-control-prev tombol-carousel" role="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </a>
-            <a class="carousel-control-next tombol-carousel" role="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </a>
         </div>
+        <a class="carousel-control-prev tombol-carousel" role="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </a>
+        <a class="carousel-control-next tombol-carousel" role="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </a>
     </div>
 
     <!-- Statistics Section -->
@@ -90,21 +100,24 @@
         <h2 class="text-center">Pakaian bekas di daur ulang.</h2>
     </div>
 
-    <!-- Alert Section -->
-    <div id="alert-container"></div>
-
     <!-- Review Submission Form -->
-    <form ng-submit="submitReview()">
-        <div class="container bawah-container">
+    <div class="container bawah-container">
+        <div ng-if="alertMessage" class="alert alert-{{alertType}} alert-dismissible fade show" role="alert">
+            {{alertMessage}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <form ng-submit="submitReview()">
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="reviewName" class="form-label">Name</label>
-                        <input type="text" name="name" class="form-control" id="reviewName" placeholder="Name" ng-model="review.name" required>
+                        <input type="text" name="name" class="form-control" id="reviewName" placeholder="Name"
+                            ng-model="review.name" required>
                     </div>
                     <div class="mb-3">
                         <label for="reviewText" class="form-label">Text</label>
-                        <textarea class="form-control" name="textarea" id="reviewText" rows="3" ng-model="review.text" required></textarea>
+                        <textarea class="form-control" name="textarea" id="reviewText" rows="3" ng-model="review.text"
+                            required></textarea>
                     </div>
                     <div class="mb-2">
                         <div class="text-end">
@@ -113,6 +126,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>

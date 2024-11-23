@@ -18,6 +18,10 @@ app.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'signup.html',
             controller: 'SignupController'
         })
+        .when('/fashion', {
+            templateUrl: 'fashion.html',
+            controller: 'FashionController'
+        })
         .otherwise({
             redirectTo: '/home' // Redirect to the home page by default
         });

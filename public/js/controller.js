@@ -51,25 +51,28 @@ app.controller('AuthController', function ($scope, $http) {
 
 app.controller('HomeController', ['$scope', '$http', function($scope, $http) {
     $scope.review = {}; // Initialize the review object
+    $scope.alertMessage = ''; // Variable to store alert messages
+    $scope.alertType = ''; // Variable to define alert type (success or error)
 
     $scope.submitReview = function() {
-        // Ensure form is valid
         if ($scope.review.name && $scope.review.text) {
             $http.post('/api/reviews', $scope.review)
                 .then(function(response) {
                     // Success callback
-                    console.log('Review submitted:', response.data);
-                    alert('Review submitted successfully!');
+                    $scope.alertMessage = 'Review submitted successfully!';
+                    $scope.alertType = 'success'; // Bootstrap success alert
                     $scope.review = {}; // Reset the form
                 })
                 .catch(function(error) {
                     // Error callback
-                    console.error('Error submitting review:', error);
-                    alert('Failed to submit review. Please try again.');
+                    $scope.alertMessage = 'Failed to submit review. Please try again.';
+                    $scope.alertType = 'danger'; // Bootstrap danger alert
                 });
         } else {
-            alert('Please fill out all fields before submitting.');
+            $scope.alertMessage = 'Please fill out all fields before submitting.';
+            $scope.alertType = 'warning'; // Bootstrap warning alert
         }
     };
 }]);
+
 
