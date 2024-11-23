@@ -28,7 +28,7 @@
 
 /* public/css/style-dampak.css:(29-38) */
 .carousel-control-prev, .carousel-control-next {
-    top: 115%;
+    top: 125%;
     transform: translateY(-50%);
 }
 
@@ -60,4 +60,10 @@
     max-width: 150px; /* Set the desired width */
     text-align: center; /* Center the text */
     border: none;
+}
+
+.gambar-carousel{
+    max-height: 300px;
+    object-fit: cover;
+    max-width: 100%;
 }
