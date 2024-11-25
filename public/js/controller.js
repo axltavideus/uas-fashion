@@ -14,7 +14,7 @@ app.controller('ReviewController', function ($scope, $http) {
     };
 });
 
-app.controller('ShopController', function ($scope, $http) {
+app.controller('ShopController', function ($scope, $http, Upload) {
     $scope.shops = [];
     $scope.newShop = {};
 
@@ -23,12 +23,25 @@ app.controller('ShopController', function ($scope, $http) {
     });
 
     $scope.addShop = function () {
-        $http.post('/api/shops', $scope.newShop).then(response => {
+        const formData = {
+            name: $scope.newShop.name,
+            description: $scope.newShop.description,
+            location: $scope.newShop.location,
+            image: $scope.newShop.image, // Attach the file
+        };
+
+        Upload.upload({
+            url: '/api/shops',
+            data: formData
+        }).then(response => {
             $scope.shops.push(response.data);
             $scope.newShop = {};
+        }).catch(error => {
+            console.error('Error uploading shop:', error);
         });
     };
 });
+
 
 app.controller('AuthController', function ($scope, $http) {
     $scope.credentials = {};

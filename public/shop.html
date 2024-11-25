@@ -1,0 +1,33 @@
+<div class="container">
+    <h1 class="text-center">Shop Management</h1>
+    <h3>Add a Shop</h3>
+    <form ng-submit="addShop()">
+        <div class="mb-3">
+            <label for="name" class="form-label">Shop Name</label>
+            <input type="text" id="name" class="form-control" ng-model="newShop.name" required>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" id="image" class="form-control" ngf-select ng-model="newShop.image" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" class="form-control" ng-model="newShop.description" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" id="location" class="form-control" ng-model="newShop.location" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Shop</button>
+    </form>    
+
+    <h3 class="mt-5">Shops</h3>
+    <div class="list-group">
+        <div class="list-group-item" ng-repeat="shop in shops">
+            <h5>{{ shop.name }}</h5>
+            <p>{{ shop.description }}</p>
+            <small>Location: {{ shop.location }}</small>
+            <img ng-if="shop.image" src="{{ shop.image }}" alt="Shop Image" class="img-fluid">
+        </div>
+    </div>
+</div>
