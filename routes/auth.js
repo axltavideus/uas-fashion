@@ -66,7 +66,7 @@ router.post('/login', async (req, res) => {
         }
 
         // Compare the password
-        const isMatch = await bcrypt.compare(req.body.password.trim(), user.password);
+        const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             console.log('Password does not match for user:', email); // Debugging log
             return res.status(401).json({ message: 'Invalid credentials.' });
@@ -74,7 +74,9 @@ router.post('/login', async (req, res) => {
 
         // Successful login
         console.log('Login successful for user:', email); // Debugging log
-        res.json({ message: 'Login successful!', user });
+
+        // Return redirect URL as response
+        res.json({ redirect: '/home' });
     } catch (error) {
         console.error('Error during login:', error); // Debugging log
         res.status(500).json({ message: 'Server error.', error });
