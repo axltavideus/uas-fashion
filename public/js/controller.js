@@ -62,7 +62,7 @@ app.controller('AuthController', function ($scope, $http) {
     };
 });
 
-app.controller("HomeController", ["$scope","$http", function ($scope, $http) {
+app.controller("HomeController", ["$scope", "$http", "$location", function ($scope, $http, $location) {
     $scope.review = {}; // Initialize the review object
     $scope.alertMessage = ""; // Variable to store alert messages
     $scope.alertType = ""; // Variable to define alert type (success or error)
@@ -130,6 +130,32 @@ app.controller("HomeController", ["$scope","$http", function ($scope, $http) {
             $scope.alertType = "danger";
           });
     };
+
+    $scope.user = {}; // Assume you fetch user data after login
+
+    // Logout Function
+    $scope.logout = function() {
+        // Clear local storage or session
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+
+        // Redirect to login page
+        $location.path('/login');
+    };
+
+    // Example: Fetch user data on page load
+    $scope.init = function() {
+        const userData = localStorage.getItem('user');
+        if (userData) {
+            $scope.user = JSON.parse(userData);
+        }
+    };
+
+    $scope.init();
+
+    $scope.logout = function() {
+        AuthService.logout();
+    };
   },
 ]);
 
@@ -141,24 +167,52 @@ app.controller('FashionController', ['$scope', function($scope) {
     $scope.message = 'Welcome to the Current Fashion Trends page!';
 }]);
 
-app.controller('LoginController', function($scope, $http, $location) {
+app.controller('AdminController', ['$scope', function($scope) {
+    $scope.message = 'Welcome to the Current Fashion Trends page!';
+}]);
+
+app.controller('LoginController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
     $scope.credentials = {
         email: '',
         password: ''
     };
 
-    $scope.login = function() {
+    $scope.login = function () {
         $http.post('/api/auth/login', $scope.credentials)
-            .then(function(response) {
-                if (response.data.redirect) {
+            .then(function (response) {
+                console.log(response.data);
+                if (response.data && response.data.role) {
+                    // Save role in sessionStorage
+                    sessionStorage.setItem('role', response.data.role);
+    
+                    // Save minimal user data (e.g., email and role) if needed
+                    sessionStorage.setItem('user', JSON.stringify({
+                        email: $scope.credentials.email,
+                        username: response.data.username,
+                        role: response.data.role
+                    }));
+
+                    // Redirect based on the role
+                    console.log('Redirecting to:', response.data.redirect);
                     $location.path(response.data.redirect);
+                } else {
+                    alert('Login failed');
                 }
             })
-            .catch(function(error) {
-                console.error(error);
+            .catch(function (error) {
+                console.error('Login error:', error);
+                alert('Login failed: ' + (error.data && error.data.message ? error.data.message : 'Server error.'));
             });
     };
-});
+    
+
+    $scope.logout = function() {
+        sessionStorage.removeItem('role');
+        sessionStorage.removeItem('user');
+        $location.path('/login'); // Redirect to login after logout
+    };
+}]);
+
 
 app.controller('SignupController', function($scope, $http) {
     $scope.credentials = {
