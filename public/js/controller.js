@@ -17,6 +17,8 @@ app.controller('ReviewController', function ($scope, $http) {
 app.controller('ShopController', function ($scope, $http, Upload) {
     $scope.shops = [];
     $scope.newShop = {};
+    var role = sessionStorage.getItem('role');
+    $scope.role = role;
 
     $http.get('/api/shops').then(response => {
         $scope.shops = response.data;
@@ -134,16 +136,6 @@ app.controller("HomeController", ["$scope", "$http", "$location", function ($sco
 
     $scope.user = {}; // Assume you fetch user data after login
 
-    // Logout Function
-    $scope.logout = function() {
-        // Clear local storage or session
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-
-        // Redirect to login page
-        $location.path('/login');
-    };
-
     // Example: Fetch user data on page load
     $scope.init = function() {
         const userData = localStorage.getItem('user');
@@ -153,10 +145,6 @@ app.controller("HomeController", ["$scope", "$http", "$location", function ($sco
     };
 
     $scope.init();
-
-    $scope.logout = function() {
-        AuthService.logout();
-    };
   },
 ]);
 
@@ -193,9 +181,11 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$window', fu
                         role: response.data.role
                     }));
 
-                    // Redirect based on the role
-                    console.log('Redirecting to:', response.data.redirect);
-                    $location.path(response.data.redirect);
+                    if (response.data.role === 'admin') {
+                        $location.path('/admin');
+                      } else {
+                        $location.path('/home');
+                      }
                 } else {
                     alert('Login failed');
                 }
@@ -204,13 +194,6 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$window', fu
                 console.error('Login error:', error);
                 alert('Login failed: ' + (error.data && error.data.message ? error.data.message : 'Server error.'));
             });
-    };
-    
-
-    $scope.logout = function() {
-        sessionStorage.removeItem('role');
-        sessionStorage.removeItem('user');
-        $location.path('/login'); // Redirect to login after logout
     };
 }]);
 
@@ -244,7 +227,7 @@ app.controller('SignupController', function($scope, $http) {
     };
 });
 
-app.controller("IndexController", ["$scope","$location",function ($scope, $location) {
+app.controller('IndexController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
     $scope.hideNavbarAndFooter = false;
 
     $scope.$on("$routeChangeSuccess", function () {
@@ -254,5 +237,17 @@ app.controller("IndexController", ["$scope","$location",function ($scope, $locat
         $scope.hideNavbarAndFooter = false;
       }
     });
-  },
-]);
+  
+    $scope.logout = function() {
+        // Clear local storage or session
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        $http.post('/api/auth/logout')
+          .then(function(response) {
+            // Redirect to login page
+            $location.path('/login');
+          }, function(error) {
+            // Logout failed, handle error
+          });
+    };
+}]);
