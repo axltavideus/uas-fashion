@@ -1,0 +1,96 @@
+.hero-carousel {
+  height: 100vh;
+}
+
+#hero-carousel {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.carousel-control-prev,
+.carousel-control-next {
+  position: absolute;
+  top: 50%; /* Posisikan vertikal di tengah */
+  transform: translateY(-50%);
+  width: 50px; /* Lebar tombol */
+  height: 50px; /* Tinggi tombol */
+  background-color: rgba(0, 0, 0, 0.5); /* Warna background tombol */
+  border-radius: 50%; /* Buat tombol berbentuk lingkaran */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10; /* Pastikan di atas konten lainnya */
+}
+
+.carousel-control-prev {
+  left: 15px; /* Jarak dari tepi kiri elemen */
+}
+
+.carousel-control-next {
+  right: 15px; /* Jarak dari tepi kanan elemen */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  width: 20px; /* Ukuran ikon panah */
+  height: 20px;
+}
+
+.carousel-caption {
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+.triangle-decor {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.triangle-decor.top-left {
+  top: 0;
+  left: -30px;
+  border-width: 30px 30px 0 0;
+  border-color: #ffffff transparent transparent transparent;
+}
+
+.triangle-decor.top-right {
+  top: 0;
+  right: -30px;
+  border-width: 30px 0 0 30px;
+  border-color: #ffffff transparent transparent transparent;
+}
+
+.triangle-decor.bottom-left {
+  bottom: 0;
+  left: -30px;
+  border-width: 0 30px 30px 0;
+  border-color: transparent #3f784c transparent transparent;
+}
+
+.triangle-decor.bottom-right {
+  bottom: 0;
+  right: -30px;
+  border-width: 0 0 30px 30px;
+  border-color: transparent transparent #3f784c transparent;
+}
+
+.video-section {
+  background-color: #f8f9fa; /* Warna background abu terang */
+  padding: 50px 20px;
+}
+
+.video-section h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+.video-section .btn-primary {
+  background-color: #3f784c;
+  border-color: #3f784c;
+}
+
+.video-section .btn-primary:hover {
+  background-color: #5c9a72;
+  border-color: #5c9a72;
+}
