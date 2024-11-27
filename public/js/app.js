@@ -1,4 +1,4 @@
-var app = angular.module('mvcApp', ['ngRoute']);
+var app = angular.module('mvcApp', ['ngRoute', 'ngFileUpload']);
 
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
@@ -30,3 +30,4 @@ app.config(['$routeProvider', function($routeProvider) {
             redirectTo: '/home' // Redirect to the home page by default
         });
 }]);
+
