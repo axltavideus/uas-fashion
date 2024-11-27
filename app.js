@@ -23,6 +23,7 @@ mongoose.connect(MONGO_URI)
 app.use('/api/reviews', require('./routes/reviews'));
 app.use('/api/shops', require('./routes/shop'));
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/accounts', require('./routes/accounts'));
 app.use('/uploads', express.static('uploads'));
 
 app.get('/', (req, res) => {

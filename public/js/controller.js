@@ -156,7 +156,7 @@ app.controller('FashionController', ['$scope', function($scope) {
     $scope.message = 'Welcome to the Current Fashion Trends page!';
 }]);
 
-app.controller('AdminController', ['$scope', '$location', function($scope, $location) {
+app.controller('AdminController', ['$scope', '$location', '$http', function($scope, $location, $http) {
     $scope.message = 'Welcome to the Current Fashion Trends page!';
     var role = sessionStorage.getItem('role');
     $scope.role = role;
@@ -164,6 +164,13 @@ app.controller('AdminController', ['$scope', '$location', function($scope, $loca
     if (role === 'user') {
         $location.path('/login');
     }
+
+    $http.get('/api/accounts')
+    .then(function(response) {
+        $scope.accounts = response.data;
+    }, function(error) {
+        console.error(error);
+    });
 }]);
 
 app.controller('LoginController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
