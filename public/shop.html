@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="css/style-shop.css">
+
 <div class="container">
     <h1 class="text-center">Shop Management</h1>
     <h3>Add a Shop</h3>
@@ -18,16 +21,28 @@
             <label for="location" class="form-label">Location</label>
             <input type="text" id="location" class="form-control" ng-model="newShop.location" required>
         </div>
+        <div class="mb-3">
+            <label for="link" class="form-label">Shop Link</label>
+            <input type="url" id="link" class="form-control" ng-model="newShop.link" required>
+        </div>
         <button type="submit" class="btn btn-primary">Add Shop</button>
-    </form>    
+    </form>
 
     <h3 class="mt-5">Shops</h3>
-    <div class="list-group">
-        <div class="list-group-item" ng-repeat="shop in shops">
-            <h5>{{ shop.name }}</h5>
-            <p>{{ shop.description }}</p>
-            <small>Location: {{ shop.location }}</small>
-            <img ng-if="shop.image" src="{{ shop.image }}" alt="Shop Image" class="img-fluid">
+    <div class="row g-4">
+        <div class="col-lg-3 col-md-6" ng-repeat="shop in shops">
+            <div class="card h-100 shop-card">
+                <div class="favorite-icon" ng-click="toggleFavorite(shop)">
+                    <i class="fa" ng-class="shop.isFavorite ? 'fa-star' : 'fa-star-o'"></i>
+                </div>
+                <img ng-if="shop.image" ng-src="{{ shop.image }}" alt="{{ shop.name }}" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">{{ shop.name }}</h5>
+                    <p class="card-text">{{ shop.description }}</p>
+                    <p class="card-text"><small class="text-muted">Location: {{ shop.location }}</small></p>
+                    <a href="{{ shop.link }}"><button class="btn btn-primary mt-3">Kunjungi Shop</button></a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

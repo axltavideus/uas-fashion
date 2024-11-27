@@ -16,7 +16,8 @@ router.post('/', upload.single('image'), async (req, res) => {
             name: req.body.name,
             description: req.body.description,
             location: req.body.location,
-            image: req.file ? `/uploads/${req.file.filename}` : null, // Save accessible path
+            image: req.file ? `/uploads/${req.file.filename}` : null, // Save accessible path\
+            link: req.body.link,
         });
         await shop.save();
         res.status(201).send(shop);
