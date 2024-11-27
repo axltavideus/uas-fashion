@@ -27,7 +27,8 @@ app.controller('ShopController', function ($scope, $http, Upload) {
             name: $scope.newShop.name,
             description: $scope.newShop.description,
             location: $scope.newShop.location,
-            image: $scope.newShop.image, // Attach the file
+            image: $scope.newShop.image,
+            link: $scope.newShop.link,  
         };
 
         Upload.upload({
