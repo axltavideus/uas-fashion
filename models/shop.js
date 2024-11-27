@@ -6,6 +6,9 @@ const shopSchema = new mongoose.Schema({
     location: String,
     image: { type: String, default: null },
     createdAt: { type: Date, default: Date.now },
+    link: String,
 });
+
+
 
 module.exports = mongoose.model('Shop', shopSchema);
