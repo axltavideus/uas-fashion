@@ -30,11 +30,15 @@ router.post('/signup', async (req, res) => {
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Assign role based on username
+        const role = username.toLowerCase() === 'admin' ? 'admin' : 'user';
+
         // Create new user
         const newUser = new User({
             email,
             username,
             password: hashedPassword,
+            role, // Assign role here
         });
 
         // Save to database
@@ -49,6 +53,7 @@ router.post('/signup', async (req, res) => {
 });
 
 
+
 // User login
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -61,26 +66,34 @@ router.post('/login', async (req, res) => {
         // Fetch user from the database
         const user = await User.findOne({ email });
         if (!user) {
-            console.log('User not found with email:', email); // Debugging log
             return res.status(401).json({ message: 'Invalid credentials.' });
         }
 
         // Compare the password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            console.log('Password does not match for user:', email); // Debugging log
             return res.status(401).json({ message: 'Invalid credentials.' });
         }
 
-        // Successful login
-        console.log('Login successful for user:', email); // Debugging log
-
-        // Return redirect URL as response
-        res.json({ redirect: '/home' });
+        // Determine redirect URL based on role
+        const redirectUrl = user.role === 'admin' ? '/#!admin' : '/#!home';
+        
+        res.json({
+            message: 'Login successful',
+            role: user.role,
+            username: user.username,
+            redirect: redirectUrl,
+        });
     } catch (error) {
-        console.error('Error during login:', error); // Debugging log
-        res.status(500).json({ message: 'Server error.', error });
+        console.error('Error during login:', error);
+        res.status(500).json({ message: 'Server error.' });
     }
+});
+
+
+router.post('/logout', (req, res) => {
+    // Invalidate session or token on the server if applicable
+    res.status(200).json({ message: 'Logged out successfully' });
 });
 
 module.exports = router;

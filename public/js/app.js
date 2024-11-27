@@ -26,6 +26,10 @@ app.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'sustainable.html',
             controller: 'SustainableController'
         })
+        .when('/admin', {
+            templateUrl: 'admin.html',
+            controller: 'AdminController',
+        })
         .otherwise({
             redirectTo: '/home' // Redirect to the home page by default
         });
