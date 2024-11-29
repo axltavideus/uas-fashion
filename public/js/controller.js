@@ -190,6 +190,10 @@ app.controller("HomeController", ["$scope", "$http", "$location", function ($sco
             });
     };
 
+    // Initialize sorting variables
+    $scope.sortBy = "createdAt"; // Default sort by date
+    $scope.reverse = true; // Default to descending order
+
     // Initialize user data on load
     $scope.init();
 }]);
