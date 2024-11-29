@@ -1,0 +1,8 @@
+<div ng-controller="AdminController">
+    <h1>Accounts</h1>
+    <ul>
+        <li ng-repeat="account in accounts">
+            {{ account.username }} ({{ account.email }})
+        </li>
+    </ul>
+</div>
