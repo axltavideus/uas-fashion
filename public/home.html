@@ -108,14 +108,16 @@
                 </div>
             </div>
         </div>
-        <a class="carousel-control-prev tombol-carousel" role="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </a>
-        <a class="carousel-control-next tombol-carousel" role="button" data-bs-target="#carouselExample" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </a>
+        <div ng-hide="role === false">
+            <a class="carousel-control-prev tombol-carousel" role="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next tombol-carousel" role="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+        </div>
     </div>
 
     <!-- Statistics Section -->
@@ -138,8 +140,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
-                        <label for="reviewName" class="form-label">Name</label>
-                        <input type="text" name="name" class="form-control" id="reviewName" placeholder="Name"
+                        <label for="reviewName" class="form-label">Title</label>
+                        <input type="text" name="name" class="form-control" id="reviewName" placeholder="Title"
                             ng-model="review.name" required>
                     </div>
                     <div class="mb-3">
@@ -166,25 +168,34 @@
             <div class="card mb-3">
                 <div class="card-header d-flex justify-content-between">
                     <h2>{{review.name}}</h2>
-                    <div class="float-end">
+                    <small><p class="text-body-secondary">Email: {{ review.email }}</p></small>
+                    <div class="float-end" ng-if="review.email === user.email">
+                        <!-- Buttons only visible for matching emails -->
                         <button class="btn btn-sm btn-primary" ng-click="editReview(review)">Edit</button>
                         <button class="btn btn-sm btn-danger" ng-click="deleteReview(review)">Delete</button>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="list-group">
+                    <div class="list-group" ng-if="!review.editing">
                         <p>{{ review.text }}</p>
+                    </div>
+                    <div class="list-group" ng-if="review.editing">
+                        <textarea ng-model="review.text" class="form-control"></textarea>
+                        <button class="btn btn-success mt-2" ng-click="saveReview(review)">Save</button>
+                        <button class="btn btn-secondary mt-2" ng-click="cancelEdit(review)">Cancel</button>
                     </div>
                     <small><p class="text-body-secondary">{{ review.createdAt | date:'medium' }}</p></small>
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-center"> 
+        <div class="d-flex justify-content-center">
             <div class="btn-group" ng-if="reviews.length > 5">
                 <button class="btn btn-success btn-pill" ng-disabled="currentPage == 1" ng-click="setCurrentPage(currentPage - 1)">Previous</button>
                 <button class="btn btn-success btn-pill" ng-disabled="currentPage == pageCount()" ng-click="setCurrentPage(currentPage + 1)">Next</button>
-              </div>
+            </div>
         </div>
     </div>
+
+    <div></div>
     
 </div>
