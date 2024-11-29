@@ -5,6 +5,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 const User = require('./models/user');
+const session = require('express-session');
 
 dotenv.config();
 
@@ -12,6 +13,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false
+}));
 
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/fashion-uas';

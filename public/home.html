@@ -108,14 +108,16 @@
                 </div>
             </div>
         </div>
-        <a class="carousel-control-prev tombol-carousel" role="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </a>
-        <a class="carousel-control-next tombol-carousel" role="button" data-bs-target="#carouselExample" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </a>
+        <div ng-hide="role === false">
+            <a class="carousel-control-prev tombol-carousel" role="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next tombol-carousel" role="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+        </div>
     </div>
 
     <!-- Statistics Section -->
@@ -166,7 +168,8 @@
             <div class="card mb-3">
                 <div class="card-header d-flex justify-content-between">
                     <h2>{{review.name}}</h2>
-                    <div class="float-end">
+                    <div class="float-end" ng-if="review.email === user.email">
+                        <!-- Buttons only visible for matching emails -->
                         <button class="btn btn-sm btn-primary" ng-click="editReview(review)">Edit</button>
                         <button class="btn btn-sm btn-danger" ng-click="deleteReview(review)">Delete</button>
                     </div>
@@ -179,12 +182,14 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-center"> 
+        <div class="d-flex justify-content-center">
             <div class="btn-group" ng-if="reviews.length > 5">
                 <button class="btn btn-success btn-pill" ng-disabled="currentPage == 1" ng-click="setCurrentPage(currentPage - 1)">Previous</button>
                 <button class="btn btn-success btn-pill" ng-disabled="currentPage == pageCount()" ng-click="setCurrentPage(currentPage + 1)">Next</button>
-              </div>
+            </div>
         </div>
-    </div>
+    </div>    
+
+    <div></div>
     
 </div>

@@ -66,87 +66,104 @@ app.controller('AuthController', function ($scope, $http) {
 });
 
 app.controller("HomeController", ["$scope", "$http", "$location", function ($scope, $http, $location) {
-    $scope.review = {}; // Initialize the review object
-    $scope.alertMessage = ""; // Variable to store alert messages
-    $scope.alertType = ""; // Variable to define alert type (success or error)
-    $scope.reviews = []; // Initialize the reviews array
-    $scope.currentPage = 1; // Initialize the current page
-    $scope.pageSize = 5; 
+    // Check role and redirect if not logged in
+    var role = sessionStorage.getItem('role');
+    $scope.role = role;
 
+    if (!role) {
+        $location.path('/login');
+    }
+
+    // Initialize user data
+    $scope.init = function () {
+        const userData = sessionStorage.getItem('user'); // Use sessionStorage consistently
+        if (userData) {
+            try {
+                $scope.user = JSON.parse(userData);
+                console.log("Parsed user data:", $scope.user);
+            } catch (error) {
+                console.error("Error parsing user data:", error);
+                $scope.user = {};
+            }
+        } else {
+            console.warn("User data not found in session storage.");
+            $scope.user = {};
+        }
+    };
+
+    // Initialize review and alert variables
+    $scope.review = {};
+    $scope.alertMessage = "";
+    $scope.alertType = "";
+    $scope.reviews = [];
+    $scope.currentPage = 1;
+    $scope.pageSize = 5;
+
+    // Submit a review
     $scope.submitReview = function () {
-      if ($scope.review.name && $scope.review.text) {
-        $http
-          .post("/api/reviews", $scope.review)
-          .then(function (response) {
-            // Success callback
-            $scope.alertMessage = "Review submitted successfully!";
-            $scope.alertType = "success"; // Bootstrap success alert
-            $scope.review = {}; // Reset the form
-          })
-          .catch(function (error) {
-            // Error callback
-            $scope.alertMessage = "Failed to submit review. Please try again.";
-            $scope.alertType = "danger"; // Bootstrap danger alert
-          });
-      } else {
-        $scope.alertMessage = "Please fill out all fields before submitting.";
-        $scope.alertType = "warning"; // Bootstrap warning alert
-      }
+        if ($scope.user && $scope.user.email) {
+            $scope.review.email = $scope.user.email; // Add user email to the review
+        }
+
+        $http.post("/api/reviews", $scope.review)
+            .then(function (response) {
+                $scope.alertMessage = "Review submitted successfully!";
+                $scope.alertType = "success";
+                $scope.review = {}; // Reset the form
+                $scope.reviews.unshift(response.data); // Add the new review to the list
+            })
+            .catch(function (error) {
+                $scope.alertMessage = "Failed to submit review. Please try again.";
+                $scope.alertType = "danger";
+            });
     };
 
     // Fetch reviews from the API
-    $http.get('/api/reviews').then(function(response) {
-        $scope.reviews = response.data.sort(function(a, b) {
-            return new Date(b.createdAt) - new Date(a.createdAt);
+    $http.get('/api/reviews')
+        .then(function (response) {
+            $scope.reviews = response.data.sort(function (a, b) {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+        })
+        .catch(function (error) {
+            console.error("Failed to fetch reviews:", error);
         });
-    });
 
-    // Function to set the current page
-    $scope.setCurrentPage = function(page) {
-        if (page < 1 || page > $scope.pageCount) return;
+    // Pagination functions
+    $scope.setCurrentPage = function (page) {
+        if (page < 1 || page > $scope.pageCount()) return;
         $scope.currentPage = page;
     };
 
-    // Function to calculate the number of pages
-    $scope.pageCount = function() {
+    $scope.pageCount = function () {
         return Math.ceil($scope.reviews.length / $scope.pageSize);
     };
 
-    // Function to get the reviews for the current page
-    $scope.getPageReviews = function() {
+    $scope.getPageReviews = function () {
         var start = ($scope.currentPage - 1) * $scope.pageSize;
         var end = start + $scope.pageSize;
         return $scope.reviews.slice(start, end);
     };
 
-    $scope.deleteReview = function(review) {
+    // Delete a review
+    $scope.deleteReview = function (review) {
         $http.delete('/api/reviews/' + review._id)
-          .then(function(response) {
-            // Remove the review from the scope
-            var index = $scope.reviews.indexOf(review);
-            $scope.reviews.splice(index, 1);
-            $scope.alertMessage = "Review deleted successfully!";
-            $scope.alertType = "success";
-          })
-          .catch(function(error) {
-            $scope.alertMessage = "Failed to delete review. Please try again.";
-            $scope.alertType = "danger";
-          });
+            .then(function (response) {
+                var index = $scope.reviews.indexOf(review);
+                $scope.reviews.splice(index, 1);
+                $scope.alertMessage = "Review deleted successfully!";
+                $scope.alertType = "success";
+            })
+            .catch(function (error) {
+                $scope.alertMessage = "Failed to delete review. Please try again.";
+                $scope.alertType = "danger";
+            });
     };
 
-    $scope.user = {}; // Assume you fetch user data after login
-
-    // Example: Fetch user data on page load
-    $scope.init = function() {
-        const userData = localStorage.getItem('user');
-        if (userData) {
-            $scope.user = JSON.parse(userData);
-        }
-    };
-
+    // Initialize user data on load
     $scope.init();
-  },
-]);
+}]);
+
 
 app.controller('SustainableController', ['$scope', function($scope) {
     $scope.message = 'Welcome to the Sustainable Fashion page!';

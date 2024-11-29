@@ -1,0 +1,35 @@
+<div>
+    <div class="container">
+        <h1 class="text-center mt-4 mb-4">Tickets</h1>
+        <form action="">
+            <!-- Review Submission Form -->
+            <div class="container mb-5">
+                <div ng-if="alertMessage" class="alert alert-{{alertType}} alert-dismissible fade show" role="alert">
+                    {{alertMessage}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <form ng-submit="submitReview()">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="reviewName" class="form-label">Name</label>
+                                <input type="text" name="name" class="form-control" id="reviewName" placeholder="Name"
+                                    ng-model="review.name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="reviewText" class="form-label">Text</label>
+                                <textarea class="form-control" name="textarea" id="reviewText" rows="3"
+                                    ng-model="review.text" required></textarea>
+                            </div>
+                            <div class="mb-2">
+                                <div class="text-end">
+                                    <button class="submit-button" type="submit">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </form>
+    </div>
+</div>
