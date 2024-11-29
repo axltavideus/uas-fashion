@@ -1,81 +1,113 @@
-<div ng-conntroller="FashionController">
-  <div class="container-fluid p-0">
-    <!-- Hero Section -->
-    <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
-      <!-- Indicators -->
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true"
-          aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      </div>
-
-      <!-- Carousel Items -->
-      <div class="carousel-inner">
-        <div class="carousel-item active"
-          style="background-image: url('assets/images/hero1.jpg'); height: 500px; background-size: cover; background-position: center;">
-          <div class="carousel-caption d-flex flex-column align-items-center justify-content-center h-100">
-            <h1 class="display-4 text-white fw-bold">The World of Current Fashion</h1>
-            <p class="text-white fs-5">Explore the latest trends shaping the fashion industry.</p>
-            <a href="#" class="btn btn-dark">Contact Us</a>
+<link rel="stylesheet" type="text/css" href="css/style-fashion.css">
+<section id="hero-carousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <div class="hero-slide d-flex align-items-center" style="background-color: #3f784c; height: 70vh;">
+        <div class="container d-flex align-items-center">
+          <div class="hero-text col-md-6 position-relative">
+            <h1 class="text-white">The world<br><span class="text-highlight">current fashion</span></h1>
+            <p class="text-white">
+              What's happening now in fashion trends, style, and innovation.
+            </p>
+            <a href="#" class="btn btn-dark mt-3">Contact Us</a>
+            <div class="triangle-decor top-left"></div>
           </div>
-        </div>
-        <div class="carousel-item"
-          style="background-image: url('assets/images/hero2.jpg'); height: 500px; background-size: cover; background-position: center;">
-          <div class="carousel-caption d-flex flex-column align-items-center justify-content-center h-100">
-            <h1 class="display-4 text-white fw-bold">Fashion Forward</h1>
-            <p class="text-white fs-5">Join the movement towards sustainable and stylish fashion.</p>
-            <a href="#" class="btn btn-light">Learn More</a>
+          <div class="hero-image col-md-6 text-center">
+            <img src="assets/fashion/fashion3.jpg" class="img-fluid" alt="Hero Image">
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Section 1: Current Fashion -->
-    <section class="bg-light py-5">
-      <div class="container text-center">
-        <h2 class="fw-bold">Current World Fashion</h2>
-        <p class="text-muted">What is the current situation in our fashion world?</p>
-        <div class="row align-items-center mt-4">
-          <div class="col-md-6">
-            <img src="assets/images/fashion-news.jpg" alt="Current Fashion" class="img-fluid rounded">
+    <div class="carousel-item">
+      <div class="hero-slide d-flex align-items-center" style="background-color: #5c9a72; height: 70vh;">
+        <div class="container d-flex align-items-center">
+          <div class="hero-text col-md-6 position-relative">
+            <h1 class="text-white">Explore More<br><span class="text-highlight">About Fashion</span></h1>
+            <p class="text-white">
+              Discover the latest ideas and trends in the fashion industry.
+            </p>
+            <a href="#" class="btn btn-light mt-3">Learn More</a>
+            <div class="triangle-decor top-right"></div>
           </div>
-          <div class="col-md-6">
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has been the industry's
-              standard dummy text since the 1500s.</p>
-            <a href="#" class="btn btn-success">Learn More</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Section 2: Learn More About Fashion -->
-    <section class="py-5">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-md-6">
-            <h2 class="fw-bold">Learn More About Current World Fashion!</h2>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-          </div>
-          <div class="col-md-6">
-            <img src="assets/images/fashion-illustration1.jpg" alt="Fashion Illustration" class="img-fluid rounded">
+          <div class="hero-image col-md-6 text-center">
+            <img src="assets/fashion/fashion2.jpg" class="img-fluid" alt="Hero Image 2">
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+  <!-- Carousel Controls -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#hero-carousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>  
+</section>
 
-    <!-- Section 3: Fashion Movement -->
-    <section class="bg-light py-5">
-      <div class="container">
-        <div class="row align-items-center flex-md-row-reverse">
-          <div class="col-md-6">
-            <h2 class="fw-bold">Join the Fashion Movement!</h2>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-          </div>
-          <div class="col-md-6">
-            <img src="assets/images/fashion-illustration2.jpg" alt="Fashion Movement" class="img-fluid rounded">
-          </div>
+
+<section class="content-section">
+  <div class="container">
+    <div class="row my-5">
+      <div class="col-md-6 position-relative">
+        <h2>Current World Fashion</h2>
+        <p>What is the current situation in our fashion world?</p>
+        <button class="btn btn-success">Learn More</button>
+        <div class="triangle-decor bottom-left"></div>
+      </div>
+      <div class="col-md-6">
+        <img src="assets/fashion/4186624-removebg-preview.png" class="img-fluid" alt="Fashion Image">
+      </div>
+    </div>
+    <div class="row my-5">
+      <div class="col-md-6 order-md-2 position-relative">
+        <h2>Learn More About <br>Current World Fashion!</h2>
+        <p>Fashion is constantly evolving and reshaping trends.</p>
+        <button class="btn btn-success">Learn More</button>
+        <div class="triangle-decor bottom-right"></div>
+      </div>
+      <div class="col-md-6 order-md-1">
+        <img src="assets/fashion/4256025-removebg-preview.png" class="img-fluid" alt="Fashion Image">
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Button to Play Video -->
+<section class="video-section text-center my-5">
+  <h2>Watch the video to learn more about current fashion!</h2>
+  <button type="button" class="btn btn-primary btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#videoModal">
+    Play Video
+  </button>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="videoModalLabel">Current Fashion Trends</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Embed Video -->
+        <div class="ratio ratio-16x9">
+          <iframe id="videoFrame" src="https://www.youtube.com/embed/your-video-id" 
+            title="YouTube video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen></iframe>
         </div>
       </div>
-    </section>
+    </div>
   </div>
 </div>
+
+<script>
+  const videoModal = document.getElementById('videoModal');
+  const videoFrame = document.getElementById('videoFrame');
+
+  videoModal.addEventListener('hidden.bs.modal', function () {
+    // Hentikan video dengan mengganti src
+    videoFrame.src = videoFrame.src;
+  });
+</script>
