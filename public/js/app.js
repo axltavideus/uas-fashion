@@ -1,4 +1,4 @@
-var app = angular.module('mvcApp', ['ngRoute']);
+var app = angular.module('mvcApp', ['ngRoute', 'ngFileUpload']);
 
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
@@ -18,7 +18,20 @@ app.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'signup.html',
             controller: 'SignupController'
         })
+        .when('/fashion', {
+            templateUrl: 'fashion.html',
+            controller: 'FashionController'
+        })
+        .when('/sustainable', {
+            templateUrl: 'sustainable.html',
+            controller: 'SustainableController'
+        })
+        .when('/admin', {
+            templateUrl: 'admin.html',
+            controller: 'AdminController',
+        })
         .otherwise({
             redirectTo: '/home' // Redirect to the home page by default
         });
 }]);
+
