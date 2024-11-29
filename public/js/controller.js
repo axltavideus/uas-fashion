@@ -67,16 +67,16 @@ app.controller('AuthController', function ($scope, $http) {
 
 app.controller("HomeController", ["$scope", "$http", "$location", function ($scope, $http, $location) {
     // Check role and redirect if not logged in
-    var role = sessionStorage.getItem('role');
+    var role = sessionStorage.getItem("role");
     $scope.role = role;
 
     if (!role) {
-        $location.path('/login');
+        $location.path("/login");
     }
 
     // Initialize user data
     $scope.init = function () {
-        const userData = sessionStorage.getItem('user'); // Use sessionStorage consistently
+        const userData = sessionStorage.getItem("user"); // Use sessionStorage consistently
         if (userData) {
             try {
                 $scope.user = JSON.parse(userData);
@@ -105,7 +105,8 @@ app.controller("HomeController", ["$scope", "$http", "$location", function ($sco
             $scope.review.email = $scope.user.email; // Add user email to the review
         }
 
-        $http.post("/api/reviews", $scope.review)
+        $http
+            .post("/api/reviews", $scope.review)
             .then(function (response) {
                 $scope.alertMessage = "Review submitted successfully!";
                 $scope.alertType = "success";
@@ -119,7 +120,8 @@ app.controller("HomeController", ["$scope", "$http", "$location", function ($sco
     };
 
     // Fetch reviews from the API
-    $http.get('/api/reviews')
+    $http
+        .get("/api/reviews")
         .then(function (response) {
             $scope.reviews = response.data.sort(function (a, b) {
                 return new Date(b.createdAt) - new Date(a.createdAt);
@@ -145,9 +147,37 @@ app.controller("HomeController", ["$scope", "$http", "$location", function ($sco
         return $scope.reviews.slice(start, end);
     };
 
+    // Function to start editing a review
+    $scope.editReview = function (review) {
+        review.editing = true; // Set editing flag
+    };
+
+    // Function to save the edited review
+    $scope.saveReview = function (review) {
+        $http
+            .put("/api/reviews/" + review._id, {text: review.text})
+            .then(function (response) {
+                var index = $scope.reviews.indexOf(review);
+                $scope.reviews[index] = response.data; // Update the review in the list
+                review.editing = false; // Reset editing flag
+                $scope.alertMessage = "Review updated successfully!";
+                $scope.alertType = "success";
+            })
+            .catch(function (error) {
+                $scope.alertMessage = "Failed to update review. Please try again.";
+                $scope.alertType = "danger";
+            });
+    };
+
+    // Function to cancel editing
+    $scope.cancelEdit = function (review) {
+        review.editing = false; // Reset editing flag
+    };
+
     // Delete a review
     $scope.deleteReview = function (review) {
-        $http.delete('/api/reviews/' + review._id)
+        $http
+            .delete("/api/reviews/" + review._id)
             .then(function (response) {
                 var index = $scope.reviews.indexOf(review);
                 $scope.reviews.splice(index, 1);

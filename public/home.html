@@ -140,8 +140,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
-                        <label for="reviewName" class="form-label">Name</label>
-                        <input type="text" name="name" class="form-control" id="reviewName" placeholder="Name"
+                        <label for="reviewName" class="form-label">Title</label>
+                        <input type="text" name="name" class="form-control" id="reviewName" placeholder="Title"
                             ng-model="review.name" required>
                     </div>
                     <div class="mb-3">
@@ -168,6 +168,7 @@
             <div class="card mb-3">
                 <div class="card-header d-flex justify-content-between">
                     <h2>{{review.name}}</h2>
+                    <small><p class="text-body-secondary">Email: {{ review.email }}</p></small>
                     <div class="float-end" ng-if="review.email === user.email">
                         <!-- Buttons only visible for matching emails -->
                         <button class="btn btn-sm btn-primary" ng-click="editReview(review)">Edit</button>
@@ -175,8 +176,13 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="list-group">
+                    <div class="list-group" ng-if="!review.editing">
                         <p>{{ review.text }}</p>
+                    </div>
+                    <div class="list-group" ng-if="review.editing">
+                        <textarea ng-model="review.text" class="form-control"></textarea>
+                        <button class="btn btn-success mt-2" ng-click="saveReview(review)">Save</button>
+                        <button class="btn btn-secondary mt-2" ng-click="cancelEdit(review)">Cancel</button>
                     </div>
                     <small><p class="text-body-secondary">{{ review.createdAt | date:'medium' }}</p></small>
                 </div>
@@ -188,7 +194,7 @@
                 <button class="btn btn-success btn-pill" ng-disabled="currentPage == pageCount()" ng-click="setCurrentPage(currentPage + 1)">Next</button>
             </div>
         </div>
-    </div>    
+    </div>
 
     <div></div>
     
