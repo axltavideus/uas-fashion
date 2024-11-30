@@ -17,13 +17,16 @@ app.controller('ReviewController', function ($scope, $http) {
 app.controller('ShopController', function ($scope, $http, Upload) {
     $scope.shops = [];
     $scope.newShop = {};
+    $scope.selectedShop = {}; // For the edit modal
     var role = sessionStorage.getItem('role');
     $scope.role = role;
 
+    // Fetch shops
     $http.get('/api/shops').then(response => {
         $scope.shops = response.data;
     });
 
+    // Add a new shop
     $scope.addShop = function () {
         const formData = {
             name: $scope.newShop.name,
@@ -42,6 +45,49 @@ app.controller('ShopController', function ($scope, $http, Upload) {
         }).catch(error => {
             console.error('Error uploading shop:', error);
         });
+    };
+
+    // Open edit shop modal
+    $scope.openEditShopModal = function (shop) {
+        $scope.selectedShop = angular.copy(shop); // Copy the shop data to the selectedShop
+        $('#editShopModal').modal('show'); // Show the modal
+    };
+
+    // Save changes to the shop
+    $scope.saveShopChanges = function () {
+        const formData = {
+            name: $scope.selectedShop.name,
+            description: $scope.selectedShop.description,
+            location: $scope.selectedShop.location,
+            image: $scope.selectedShop.image,
+            link: $scope.selectedShop.link,
+        };
+    
+        Upload.upload({
+            url: `/api/shops/${$scope.selectedShop._id}`, // Correct endpoint
+            method: 'PUT', // Specify PUT method
+            data: formData,
+        }).then(response => {
+            const index = $scope.shops.findIndex(shop => shop._id === response.data._id);
+            if (index !== -1) {
+                $scope.shops[index] = response.data; // Update the shop in the list
+            }
+            $('#editShopModal').modal('hide'); // Hide the modal after saving changes
+        }).catch(error => {
+            console.error('Error updating shop:', error);
+        });
+    };
+    
+
+    // Delete a shop
+    $scope.deleteShop = function (shopId) {
+        if (confirm('Are you sure you want to delete this shop?')) {
+            $http.delete(`/api/shops/${shopId}`).then(() => {
+                $scope.shops = $scope.shops.filter(shop => shop._id !== shopId); // Remove the shop from the list
+            }).catch(error => {
+                console.error('Error deleting shop:', error);
+            });
+        }
     };
 });
 
