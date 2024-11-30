@@ -1,11 +1,19 @@
+*{
+    overflow-x: hidden;
+}
 .judul{
     font-size: 62px;
     font-weight: 400;
     padding-top: 15%;
 }
 
-.background{
-    /* background-color: #254D32; */
+.image-background{
+    background-image: url('../assets/homepage/bg1.png'); /* Ensure the path is correct */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%; /* Adjust based on your design */
+    width: 100%;
 }
 
 .bawah-judul{
@@ -19,7 +27,7 @@
 }
 
 .tombol-carousel {
-    border: 2px solid rgb(0, 0, 0); /* White outline with some transparency */
+    border: 2px solid rgb(255, 255, 255); /* White outline with some transparency */
     border-radius: 50%; /* Makes the outline circular */
     padding: 10px; /* Adjust padding for spacing */
     height: 50px;
@@ -34,15 +42,14 @@
 
 .carousel-control-prev {
     left: 20%;
+    overflow-y: hidden;
 }
 
 .carousel-control-next {
     right: 20%;
+    overflow-y: hidden;
 }
 
-.carousel-control-prev-icon, .carousel-control-next-icon {
-    filter: invert(100%) brightness(100%);
-}
 
 .carousel-bawah{
     margin-top: 10%;
