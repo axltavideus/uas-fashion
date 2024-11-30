@@ -41,6 +41,38 @@ section {
     }
 }
 
+/* Add this to your style-sustainable.css */
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.hero .text-box {
+    animation: slideInLeft 1s ease-out forwards;
+}
+
+.hero .image-box {
+    animation: slideInRight 1s ease-out forwards;
+}
+
+
 /* Hero */
 
 /* About */
@@ -52,6 +84,16 @@ section {
     .about-box img {
         width: 300px;
     }
+}
+
+.carousel-inner {
+    height: 500px;
+}
+
+.carousel-item img {
+    object-fit: fill;
+    height: 100%;
+    width: 100%;
 }
 
 /* About */

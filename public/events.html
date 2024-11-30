@@ -1,9 +1,9 @@
 <link rel="stylesheet" type="text/css" href="css/style-event.css">
 <div class="container" ng-controller="EventsController">
-    <h1 class="my-4">Upcoming Events</h1>
+    <h1 class="my-4 fade-in">Upcoming Events</h1>
     <div class="row">
         <div class="col-md-4" ng-repeat="event in events" class="mb-4">
-            <div class="card event-card" style="background-image: url('{{ event.image }}');">
+            <div class="card event-card slide-left" style="background-image: url('{{ event.image }}');">
                 <div class="card-body">
                     <h3 class="card-title">{{ event.name }}</h3>
                     <p class="card-text">{{ event.description }}</p>
