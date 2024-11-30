@@ -1,0 +1,13 @@
+<div class="container" ng-controller="EventsController">
+    <h1 class="my-4">Upcoming Events</h1>
+    <div class="card">
+        <div class="card-body">
+            <div ng-repeat="event in events" class="mb-4">
+                <h3>{{ event.name }}</h3>
+                <p>{{ event.description }}</p>
+                <p><strong>Location:</strong> {{ event.location }} - <strong>Time:</strong> {{ event.time }}</p>
+                <button class="btn btn-primary" ng-click="signUp(event._id)">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</div>

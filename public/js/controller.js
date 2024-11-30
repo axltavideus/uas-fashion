@@ -207,21 +207,123 @@ app.controller('FashionController', ['$scope', function($scope) {
     $scope.message = 'Welcome to the Current Fashion Trends page!';
 }]);
 
-app.controller('AdminController', ['$scope', '$location', '$http', function($scope, $location, $http) {
-    $scope.message = 'Welcome to the Current Fashion Trends page!';
+app.controller('EventsController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+    $scope.events = [];
+    $scope.userEmail = ''; // Initialize userEmail
+
+    // Fetch user email from sessionStorage
+    const userData = sessionStorage.getItem("user"); // Assuming user data is stored here
+    if (userData) {
+        try {
+            const user = JSON.parse(userData);
+            $scope.userEmail = user.email; // Get the email from user data
+        } catch (error) {
+            console.error("Error parsing user data:", error);
+            $scope.userEmail = ''; // Reset if there's an error
+        }
+    } else {
+        console.warn("User  data not found in session storage.");
+        $scope.userEmail = ''; // Reset if user data is not found
+    }
+
+    // Fetch events
+    $http.get('/api/tickets').then(response => {
+        $scope.events = response.data;
+    }).catch(err => {
+        console.error('Failed to fetch events:', err);
+    });
+
+    // Sign up for an event
+    $scope.signUp = function (id) {
+        if (!$scope.userEmail) {
+            alert('You need to be logged in to sign up for an event.');
+            return;
+        }
+
+        $http.post(`/api/tickets/${id}/signup`, { email: $scope.userEmail }).then(() => {
+            alert('You successfully signed up for the event!');
+        }).catch(err => {
+            alert(err.data.error || 'Failed to sign up. Try again later.');
+        });
+    };
+}]);
+
+app.controller('AdminController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
     var role = sessionStorage.getItem('role');
     $scope.role = role;
 
-    if (role === 'user') {
+    if (role !== 'admin') {
         $location.path('/login');
     }
 
-    $http.get('/api/accounts')
-    .then(function(response) {
+    // Accounts and events data
+    $scope.accounts = [];
+    $scope.events = [];
+    $scope.newEvent = {};
+    $scope.selectedEvent = {}; // For the modal
+
+    // Fetch accounts
+    $http.get('/api/accounts').then(response => {
         $scope.accounts = response.data;
-    }, function(error) {
-        console.error(error);
+    }).catch(err => {
+        console.error('Failed to fetch accounts:', err);
+        alert('Failed to fetch accounts.');
     });
+
+    // Fetch events
+    $http.get('/api/tickets').then(response => {
+        $scope.events = response.data;
+    }).catch(err => {
+        console.error('Failed to fetch events:', err);
+        alert('Failed to fetch events.');
+    });
+
+    // Add event
+    $scope.addEvent = function () {
+        // Ensure all required fields are populated
+        if (!$scope.newEvent.name || !$scope.newEvent.location || !$scope.newEvent.time || !$scope.newEvent.description) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+
+        $http.post('/api/tickets', $scope.newEvent).then(response => {
+            $scope.events.push(response.data);
+            $scope.newEvent = {}; // Reset the form
+        }).catch(err => {
+            alert(err.data.error || 'Failed to add event');
+        });
+    };
+
+    // Open edit event modal
+    $scope.openEditEventModal = function (event) {
+        $scope.selectedEvent = angular.copy(event); // Copy the event data to the modal
+        $('#editEventModal').modal('show'); // Show the modal
+    };
+
+    // Save event changes
+    $scope.saveEventChanges = function () {
+        $http.put(`/api/tickets/${$scope.selectedEvent._id}`, $scope.selectedEvent).then(response => {
+            // Update the event in the list
+            const index = $scope.events.findIndex(event => event._id === $scope.selectedEvent._id);
+            if (index !== -1) {
+                $scope.events[index] = response.data; // Update the event with the response data
+            }
+            $('#editEventModal').modal('hide'); // Hide the modal
+        }).catch(err => {
+            alert(err.data.error || 'Failed to edit event');
+        });
+    };
+
+    // Delete event
+    $scope.deleteEvent = function (id) {
+        if (confirm('Are you sure you want to delete this event?')) {
+            $http.delete(`/api/tickets/${id}`).then(() => {
+                $scope.events = $scope.events.filter(event => event._id !== id);
+            }).catch(err => {
+                alert(err.data.error || 'Failed to delete event');
+            });
+        }
+    };
 }]);
 
 app.controller('LoginController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
@@ -260,7 +362,6 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$window', fu
             });
     };
 }]);
-
 
 app.controller('SignupController', function($scope, $http) {
     $scope.credentials = {
