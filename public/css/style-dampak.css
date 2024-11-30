@@ -1,6 +1,7 @@
-*{
+body{
     overflow-x: hidden;
 }
+
 .judul{
     font-size: 62px;
     font-weight: 400;
@@ -11,8 +12,7 @@
     background-image: url('../assets/homepage/bg1.png'); /* Ensure the path is correct */
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    height: 100%; /* Adjust based on your design */
+    background-repeat: no-repeat;/* Adjust based on your design */
     width: 100%;
 }
 
@@ -78,4 +78,34 @@
     border-radius: 50px;
     padding: 8px 20px;
     background-color: #69B578; /* Green background */
+}
+
+/* General animations */
+.fade-in {
+    animation: fadeIn 1s ease-in-out forwards;
+}
+
+.slide-up {
+    animation: slideUp 1s ease-in-out forwards;
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
