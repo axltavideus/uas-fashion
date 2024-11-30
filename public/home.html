@@ -164,25 +164,25 @@
     </div>
 
     <div class="container">
-        <div class="d-flex justify-content-between mb-3">
-            <input type="text" ng-model="searchText" class="form-control" placeholder="Search reviews...">
-            <div>
-                <button class="submit-button" ng-click="sortBy = 'name'; reverse = !reverse">Sort by Name</button>
-                <button class="submit-button" ng-click="sortBy = 'createdAt'; reverse = !reverse">Sort by Date</button>
-            </div>
-        </div>
-        <div class="list-group-item" ng-repeat="review in getPageReviews() | filter:searchText | orderBy:sortBy:reverse">
+        <div class="list-group-item" ng-repeat="review in getPageReviews() | orderBy:'-createdAt'">
             <div class="card mb-3">
                 <div class="card-header d-flex justify-content-between">
                     <h2>{{review.name}}</h2>
+                    <small><p class="text-body-secondary">Email: {{ review.email }}</p></small>
                     <div class="float-end" ng-if="review.email === user.email">
+                        <!-- Buttons only visible for matching emails -->
                         <button class="btn btn-sm btn-primary" ng-click="editReview(review)">Edit</button>
                         <button class="btn btn-sm btn-danger" ng-click="deleteReview(review)">Delete</button>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="list-group">
+                    <div class="list-group" ng-if="!review.editing">
                         <p>{{ review.text }}</p>
+                    </div>
+                    <div class="list-group" ng-if="review.editing">
+                        <textarea ng-model="review.text" class="form-control"></textarea>
+                        <button class="btn btn-success mt-2" ng-click="saveReview(review)">Save</button>
+                        <button class="btn btn-secondary mt-2" ng-click="cancelEdit(review)">Cancel</button>
                     </div>
                     <small><p class="text-body-secondary">{{ review.createdAt | date:'medium' }}</p></small>
                 </div>

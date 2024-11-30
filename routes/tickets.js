@@ -29,21 +29,23 @@ router.post('/', upload.single('image'), async (req, res) => {
 
 // Update a ticket (event)
 router.put('/:id', upload.single('image'), async (req, res) => {
-    try {
-        const updateData = {
-            name: req.body.name,
-            location: req.body.location,
-            time: req.body.time,
-            description: req.body.description,
-        };
-        if (req.file) {
-            updateData.image = `/uploads/${req.file.filename}`; // Update image path if a new image is uploaded
-        }
+    const ticketId = req.params.id;
+    const updatedData = {
+        name: req.body.name,
+        location: req.body.location,
+        time: req.body.time,
+        description: req.body.description,
+        image: req.file ? `/uploads/${req.file.filename}` : undefined, // Update image if a new one is uploaded
+    };
 
-        const ticket = await Tickets.findByIdAndUpdate(req.params.id, updateData, { new: true });
-        res.send(ticket);
-    } catch (error) {
-        console.error(error);
+    try {
+        const updatedTicket = await Tickets.findByIdAndUpdate(ticketId, updatedData, { new: true });
+        if (!updatedTicket) {
+            return res.status(404).send('Ticket not found');
+        }
+        res.send(updatedTicket);
+    } catch (err) {
+        console.error(err);
         res.status(500).send({ error: 'Unable to update event' });
     }
 });

@@ -43,6 +43,50 @@
                     <p class="card-text">{{ shop.description }}</p>
                     <p class="card-text"><small class="text-muted">Location: {{ shop.location }}</small></p>
                     <a href="{{ shop.link }}"><button class="btn btn-primary mt-3">Kunjungi Shop</button></a>
+                    <button class="btn btn-warning mt-3" ng-click="openEditShopModal(shop)" ng-hide="role === 'user'">Edit</button>
+                    <button class="btn btn-danger mt-3" ng-click="deleteShop(shop._id)" ng-hide="role === 'user'">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit Shop Modal -->
+    <div class="modal fade" id="editShopModal" tabindex="-1" role="dialog" aria-labelledby="editShopModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editShopModalLabel">Edit Shop</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="editShopName" class="form-label">Shop Name</label>
+                            <input type="text" id="editShopName" class="form-control" ng-model="selectedShop.name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editShopImage" class="form-label">Image</label>
+                            <input type="file" id="editShopImage" class="form-control" ngf-select ng-model="selectedShop.image">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editShopDescription" class="form-label">Description</label>
+                            <textarea id="editShopDescription" class="form-control" ng-model="selectedShop.description" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editShopLocation" class="form-label">Location</label>
+                            <input type="text" id="editShopLocation" class="form-control" ng-model="selectedShop.location" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editShopLink" class="form-label">Shop Link</label>
+                            <input type="url" id="editShopLink" class="form-control" ng-model="selectedShop.link" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="saveShopChanges()">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
