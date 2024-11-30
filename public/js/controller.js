@@ -248,7 +248,7 @@ app.controller('EventsController', ['$scope', '$http', '$location', function ($s
     };
 }]);
 
-app.controller('AdminController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+app.controller('AdminController', ['$scope', '$http', '$location', 'Upload', function ($scope, $http, $location, Upload) {
     var role = sessionStorage.getItem('role');
     $scope.role = role;
 
@@ -260,10 +260,12 @@ app.controller('AdminController', ['$scope', '$http', '$location', function ($sc
     $scope.accounts = [];
     $scope.events = [];
     $scope.newEvent = {};
-    $scope.selectedEvent = {}; // For the modal
+    $scope.selectedEvent = {}; // For the event modal
+    $scope.selectedAccount = {}; // For the account modal
 
     // Fetch accounts
     $http.get('/api/accounts').then(response => {
+        console.log(response.data); // Log the response data
         $scope.accounts = response.data;
     }).catch(err => {
         console.error('Failed to fetch accounts:', err);
@@ -280,13 +282,16 @@ app.controller('AdminController', ['$scope', '$http', '$location', function ($sc
 
     // Add event
     $scope.addEvent = function () {
-        // Ensure all required fields are populated
-        if (!$scope.newEvent.name || !$scope.newEvent.location || !$scope.newEvent.time || !$scope.newEvent.description) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-
-        $http.post('/api/tickets', $scope.newEvent).then(response => {
+        Upload.upload({
+            url: '/api/tickets',
+            data: {
+                name: $scope.newEvent.name,
+                location: $scope.newEvent.location,
+                time: $scope.newEvent.time,
+                description: $scope.newEvent.description,
+                image: $scope.newEvent.image // This will hold the image file
+            }
+        }).then(response => {
             $scope.events.push(response.data);
             $scope.newEvent = {}; // Reset the form
         }).catch(err => {
@@ -296,31 +301,38 @@ app.controller('AdminController', ['$scope', '$http', '$location', function ($sc
 
     // Open edit event modal
     $scope.openEditEventModal = function (event) {
-        $scope.selectedEvent = angular.copy(event); // Copy the event data to the modal
-        $('#editEventModal').modal('show'); // Show the modal
+        $scope.selectedEvent = angular.copy(event); // Copy the event data to the selectedEvent for editing
     };
 
-    // Save event changes
-    $scope.saveEventChanges = function () {
-        $http.put(`/api/tickets/${$scope.selectedEvent._id}`, $scope.selectedEvent).then(response => {
-            // Update the event in the list
-            const index = $scope.events.findIndex(event => event._id === $scope.selectedEvent._id);
-            if (index !== -1) {
-                $scope.events[index] = response.data; // Update the event with the response data
+    // Update event
+    $scope.updateEvent = function () {
+        Upload.upload({
+            url: `/api/tickets/${$scope.selectedEvent._id}`,
+            data: {
+                name: $scope.selectedEvent.name,
+                location: $scope.selectedEvent.location,
+                time: $scope.selectedEvent.time,
+                description: $scope.selectedEvent.description,
+                image: $scope.selectedEvent.image // This will hold the new image file if uploaded
             }
-            $('#editEventModal').modal('hide'); // Hide the modal
+        }).then(response => {
+            const index = $scope.events.findIndex(event => event._id === response.data._id);
+            if (index !== -1) {
+                $scope.events[index] = response.data; // Update the event in the list
+            }
+            $scope.selectedEvent = {}; // Reset the selected event
         }).catch(err => {
-            alert(err.data.error || 'Failed to edit event');
+            alert(err.data.error || 'Failed to update event');
         });
     };
 
     // Delete event
-    $scope.deleteEvent = function (id) {
+    $scope.deleteEvent = function (eventId) {
         if (confirm('Are you sure you want to delete this event?')) {
-            $http.delete(`/api/tickets/${id}`).then(() => {
-                $scope.events = $scope.events.filter(event => event._id !== id);
+            $http.delete(`/api/tickets/${eventId}`).then(() => {
+                $scope.events = $scope.events.filter(event => event._id !== eventId); // Remove the event from the list
             }).catch(err => {
-                alert(err.data.error || 'Failed to delete event');
+                alert('Failed to delete event');
             });
         }
     };
