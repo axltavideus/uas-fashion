@@ -1,4 +1,4 @@
-*{
+body{
     overflow-x: hidden;
 }
 .judul{
@@ -11,8 +11,7 @@
     background-image: url('../assets/homepage/bg1.png'); /* Ensure the path is correct */
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    height: 100%; /* Adjust based on your design */
+    background-repeat: no-repeat;/* Adjust based on your design */
     width: 100%;
 }
 
