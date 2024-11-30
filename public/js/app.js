@@ -30,9 +30,9 @@ app.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'admin.html',
             controller: 'AdminController',
         })
-        .when('/tickets', {
-            templateUrl: 'tickets.html',
-            controller: 'TicketsController',
+        .when('/events', {
+            templateUrl: 'events.html',
+            controller: 'EventsController',
         })
         .otherwise({
             redirectTo: '/home' // Redirect to the home page by default

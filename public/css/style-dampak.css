@@ -57,7 +57,7 @@
     padding: 8px 30px; /* Original padding */
     border-radius: 50px; /* Makes it pill-shaped */
     text-decoration: none; /* Removes underline */
-    max-width: 150px; /* Set the desired width */
+    min-width: 150px; /* Set the desired width */
     text-align: center; /* Center the text */
     border: none;
 }

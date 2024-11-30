@@ -3,7 +3,6 @@ const Review = require('../models/reviews');
 const router = express.Router();
 
 // Submit a review
-// Submit a review
 router.post('/', async (req, res) => {
     const { name, text, email } = req.body; // Destructure from request body
 

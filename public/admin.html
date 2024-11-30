@@ -1,8 +1,128 @@
-<div ng-controller="AdminController">
-    <h1>Accounts</h1>
-    <ul>
-        <li ng-repeat="account in accounts">
-            {{ account.username }} ({{ account.email }})
+<div class="container" ng-controller="AdminController">
+    <h1 class="my-4">Manage Accounts</h1>
+    
+    <ul class="list-group mb-4">
+        <li class="list-group-item" ng-repeat="account in accounts">
+            Username: {{ account.username }} <br> 
+            Email: {{ account.email }}
+            <div class="float-right">
+                <button class="btn btn-warning btn-sm" ng-click="openEditAccountModal(account)">Edit</button>
+                <button class="btn btn-danger btn-sm" ng-click="deleteAccount(account._id)">Delete</button>
+            </div>
         </li>
     </ul>
+
+    <h1 class="my-4">Manage Events</h1>
+
+    <!-- Add Event Form -->
+    <form ng-submit="addEvent()" class="mb-4" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="eventName">Event Name</label>
+            <input type="text" id="eventName" class="form-control" placeholder="Event Name" ng-model="newEvent.name" required>
+        </div>
+        <div class="form-group">
+            <label for="eventLocation">Location</label>
+            <input type="text" id="eventLocation" class="form-control" placeholder="Location" ng-model="newEvent.location" required>
+        </div>
+        <div class="form-group">
+            <label for="eventTime">Time</label>
+            <input type="text" id="eventTime" class="form-control" placeholder="Time" ng-model="newEvent.time" required>
+        </div>
+        <div class="form-group">
+            <label for="eventDescription">Description</label>
+            <textarea id="eventDescription" class="form-control" placeholder="Description" ng-model="newEvent.description" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="eventImage">Event Image</label>
+            <input type="file" id="eventImage" class="form-control" ngf-select ng-model="newEvent.image" accept="image/*" required>
+        </div>
+        <button type="submit" class="mt-3 btn btn-primary">Add Event</button>
+    </form>
+
+    <!-- Event List -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Event List</h5>
+            <div class="event-cards">
+                <div class="event-card mb-3 border p-3" ng-repeat="event in events">
+                    <h3>{{ event.name }}</h3>
+                    <p>{{ event.description }}</p>
+                    <p><strong>Location:</strong> {{ event.location }}</p>
+                    <p><strong>Time:</strong> {{ event.time }}</p>
+                    <img ng-if="event.image" ng-src="{{ event.image }}" alt="{{ event.name }}" style="width: 100px; height: auto;" />
+                    <div class="float-right">
+                        <button class="btn btn-warning btn-sm" ng-click="openEditEventModal(event)">Edit</button>
+                        <button class="btn btn-danger btn-sm" ng-click="deleteEvent(event._id)">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Account Modal -->
+    <div class="modal fade" id="editAccountModal" tabindex="-1" role="dialog" aria-labelledby="editAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAccountModalLabel">Edit Account</h5>
+                </div>
+
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="editUsername">Username</label>
+                            <input type="text" id="editUsername" class="form-control" ng-model="selectedAccount.username" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editEmail">Email</label>
+                            <input type="email" id="editEmail" class="form-control" ng-model="selectedAccount.email" required>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class ="btn btn-primary" ng-click="saveAccountChanges()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Event Modal -->
+    <div class="modal fade" id="editEventModal" tabindex="-1" role="dialog" aria-labelledby="editEventModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEventModalLabel">Edit Event</h5>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="editEventName">Event Name</label>
+                            <input type="text" id="editEventName" class="form-control" ng-model="selectedEvent.name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editEventLocation">Location</label>
+                            <input type="text" id="editEventLocation" class="form-control" ng-model="selectedEvent.location" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editEventTime">Time</label>
+                            <input type="text" id="editEventTime" class="form-control" ng-model="selectedEvent.time" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editEventDescription">Description</label>
+                            <textarea id="editEventDescription" class="form-control" ng-model="selectedEvent.description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="editEventImage">Event Image</label>
+                            <input type="file" id="editEventImage" class="form-control" ngf-select ng-model="selectedEvent.image" accept="image/*">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="saveEventChanges()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

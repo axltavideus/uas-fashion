@@ -1,0 +1,24 @@
+.event-card {
+    background-size: cover; /* Cover the entire card */
+    background-position: center; /* Center the image */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    position: relative; /* Position relative for overlay */
+    height: 250px; /* Set a fixed height for the card */
+    display: flex; /* Use flexbox for alignment */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: flex-end; /* Align content to the bottom */
+}
+
+.event-card .card-body {
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background for text */
+    padding: 15px; /* Padding for the text */
+}
+
+.card-title {
+    font-size: 1.5rem; /* Adjust title size */
+}
+
+.card-text {
+    font-size: 1rem; /* Adjust text size */
+}

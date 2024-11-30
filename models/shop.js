@@ -9,6 +9,4 @@ const shopSchema = new mongoose.Schema({
     link: String,
 });
 
-
-
 module.exports = mongoose.model('Shop', shopSchema);

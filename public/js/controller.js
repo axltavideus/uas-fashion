@@ -190,6 +190,10 @@ app.controller("HomeController", ["$scope", "$http", "$location", function ($sco
             });
     };
 
+    // Initialize sorting variables
+    $scope.sortBy = "createdAt"; // Default sort by date
+    $scope.reverse = true; // Default to descending order
+
     // Initialize user data on load
     $scope.init();
 }]);
@@ -203,21 +207,135 @@ app.controller('FashionController', ['$scope', function($scope) {
     $scope.message = 'Welcome to the Current Fashion Trends page!';
 }]);
 
-app.controller('AdminController', ['$scope', '$location', '$http', function($scope, $location, $http) {
-    $scope.message = 'Welcome to the Current Fashion Trends page!';
+app.controller('EventsController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+    $scope.events = [];
+    $scope.userEmail = ''; // Initialize userEmail
+
+    // Fetch user email from sessionStorage
+    const userData = sessionStorage.getItem("user"); // Assuming user data is stored here
+    if (userData) {
+        try {
+            const user = JSON.parse(userData);
+            $scope.userEmail = user.email; // Get the email from user data
+        } catch (error) {
+            console.error("Error parsing user data:", error);
+            $scope.userEmail = ''; // Reset if there's an error
+        }
+    } else {
+        console.warn("User  data not found in session storage.");
+        $scope.userEmail = ''; // Reset if user data is not found
+    }
+
+    // Fetch events
+    $http.get('/api/tickets').then(response => {
+        $scope.events = response.data;
+    }).catch(err => {
+        console.error('Failed to fetch events:', err);
+    });
+
+    // Sign up for an event
+    $scope.signUp = function (id) {
+        if (!$scope.userEmail) {
+            alert('You need to be logged in to sign up for an event.');
+            return;
+        }
+
+        $http.post(`/api/tickets/${id}/signup`, { email: $scope.userEmail }).then(() => {
+            alert('You successfully signed up for the event!');
+        }).catch(err => {
+            alert(err.data.error || 'Failed to sign up. Try again later.');
+        });
+    };
+}]);
+
+app.controller('AdminController', ['$scope', '$http', '$location', 'Upload', function ($scope, $http, $location, Upload) {
     var role = sessionStorage.getItem('role');
     $scope.role = role;
 
-    if (role === 'user') {
+    if (role !== 'admin') {
         $location.path('/login');
     }
 
-    $http.get('/api/accounts')
-    .then(function(response) {
+    // Accounts and events data
+    $scope.accounts = [];
+    $scope.events = [];
+    $scope.newEvent = {};
+    $scope.selectedEvent = {}; // For the event modal
+    $scope.selectedAccount = {}; // For the account modal
+
+    // Fetch accounts
+    $http.get('/api/accounts').then(response => {
+        console.log(response.data); // Log the response data
         $scope.accounts = response.data;
-    }, function(error) {
-        console.error(error);
+    }).catch(err => {
+        console.error('Failed to fetch accounts:', err);
+        alert('Failed to fetch accounts.');
     });
+
+    // Fetch events
+    $http.get('/api/tickets').then(response => {
+        $scope.events = response.data;
+    }).catch(err => {
+        console.error('Failed to fetch events:', err);
+        alert('Failed to fetch events.');
+    });
+
+    // Add event
+    $scope.addEvent = function () {
+        Upload.upload({
+            url: '/api/tickets',
+            data: {
+                name: $scope.newEvent.name,
+                location: $scope.newEvent.location,
+                time: $scope.newEvent.time,
+                description: $scope.newEvent.description,
+                image: $scope.newEvent.image // This will hold the image file
+            }
+        }).then(response => {
+            $scope.events.push(response.data);
+            $scope.newEvent = {}; // Reset the form
+        }).catch(err => {
+            alert(err.data.error || 'Failed to add event');
+        });
+    };
+
+    // Open edit event modal
+    $scope.openEditEventModal = function (event) {
+        $scope.selectedEvent = angular.copy(event); // Copy the event data to the selectedEvent for editing
+    };
+
+    // Update event
+    $scope.updateEvent = function () {
+        Upload.upload({
+            url: `/api/tickets/${$scope.selectedEvent._id}`,
+            data: {
+                name: $scope.selectedEvent.name,
+                location: $scope.selectedEvent.location,
+                time: $scope.selectedEvent.time,
+                description: $scope.selectedEvent.description,
+                image: $scope.selectedEvent.image // This will hold the new image file if uploaded
+            }
+        }).then(response => {
+            const index = $scope.events.findIndex(event => event._id === response.data._id);
+            if (index !== -1) {
+                $scope.events[index] = response.data; // Update the event in the list
+            }
+            $scope.selectedEvent = {}; // Reset the selected event
+        }).catch(err => {
+            alert(err.data.error || 'Failed to update event');
+        });
+    };
+
+    // Delete event
+    $scope.deleteEvent = function (eventId) {
+        if (confirm('Are you sure you want to delete this event?')) {
+            $http.delete(`/api/tickets/${eventId}`).then(() => {
+                $scope.events = $scope.events.filter(event => event._id !== eventId); // Remove the event from the list
+            }).catch(err => {
+                alert('Failed to delete event');
+            });
+        }
+    };
 }]);
 
 app.controller('LoginController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
@@ -256,7 +374,6 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$window', fu
             });
     };
 }]);
-
 
 app.controller('SignupController', function($scope, $http) {
     $scope.credentials = {
