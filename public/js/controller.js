@@ -190,10 +190,6 @@ app.controller("HomeController", ["$scope", "$http", "$location", function ($sco
             });
     };
 
-    // Initialize sorting variables
-    $scope.sortBy = "createdAt"; // Default sort by date
-    $scope.reverse = true; // Default to descending order
-
     // Initialize user data on load
     $scope.init();
 }]);
@@ -272,6 +268,26 @@ app.controller('AdminController', ['$scope', '$http', '$location', 'Upload', fun
         alert('Failed to fetch accounts.');
     });
 
+    $scope.openEditAccountModal = function (account) {
+        $scope.selectedAccount = angular.copy(account);
+        $('#editAccountModal').modal('show');
+    };
+
+    $scope.saveAccountChanges = function () {
+        $http.put(`/api/accounts/${$scope.selectedAccount._id}`, $scope.selectedAccount)
+            .then(response => {
+                const index = $scope.accounts.findIndex(account => account._id === response.data._id);
+                if (index !== -1) {
+                    $scope.accounts[index] = response.data; // Update the account in the list
+                }
+                $scope.selectedAccount = {}; // Reset the selected account
+                $('#editAccountModal').modal('hide'); // Hide the modal after saving changes
+            })
+            .catch(err => {
+                alert(err.data.error || 'Failed to update account');
+            });
+    };
+
     // Fetch events
     $http.get('/api/tickets').then(response => {
         $scope.events = response.data;
@@ -302,18 +318,25 @@ app.controller('AdminController', ['$scope', '$http', '$location', 'Upload', fun
     // Open edit event modal
     $scope.openEditEventModal = function (event) {
         $scope.selectedEvent = angular.copy(event); // Copy the event data to the selectedEvent for editing
+        $('#editEventModal').modal('show'); // Show the modal
+    };
+
+    $scope.saveEventChanges = function () {
+        $scope.updateEvent(); // Call the update function
+        $('#editEventModal').modal('hide'); // Hide the modal after saving changes
     };
 
     // Update event
     $scope.updateEvent = function () {
         Upload.upload({
-            url: `/api/tickets/${$scope.selectedEvent._id}`,
+            url: `/api/tickets/${$scope.selectedEvent._id}`, // Correct endpoint
+            method: 'PUT', // Change from POST to PUT
             data: {
                 name: $scope.selectedEvent.name,
                 location: $scope.selectedEvent.location,
                 time: $scope.selectedEvent.time,
                 description: $scope.selectedEvent.description,
-                image: $scope.selectedEvent.image // This will hold the new image file if uploaded
+                image: $scope.selectedEvent.image // Include the image file if uploaded
             }
         }).then(response => {
             const index = $scope.events.findIndex(event => event._id === response.data._id);
@@ -321,10 +344,12 @@ app.controller('AdminController', ['$scope', '$http', '$location', 'Upload', fun
                 $scope.events[index] = response.data; // Update the event in the list
             }
             $scope.selectedEvent = {}; // Reset the selected event
+            $('#editEventModal').modal('hide'); // Hide the modal after saving changes
         }).catch(err => {
             alert(err.data.error || 'Failed to update event');
         });
     };
+    
 
     // Delete event
     $scope.deleteEvent = function (eventId) {
