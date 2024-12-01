@@ -1,96 +1,36 @@
-
-/* General Styling */
+/* General Styles */
 body {
-    font-family: "Roboto Serif", serif;
-    background-color: #f8f9fa;
-    color: #343a40;
-    margin: 0;
-    padding: 0;
+    background-color: #f9f9f9;
+    color: #254D32;
 }
 
 .container {
     margin-top: 30px;
-}
-
-/* Header Styling */
-h1 {
-    font-size: 2.5rem;
-    font-weight: bold;
     margin-bottom: 30px;
 }
 
-h3 {
-    font-size: 1.5rem;
-    color: #495057;
-    margin-bottom: 20px;
+h1, h3 {
+    color: #254D32;
 }
 
-/* Form Styling */
-.form-label {
-    font-weight: bold;
-    color: #495057;
-}
-
-.form-control {
+/* Shop Card */
+.shop-card {
+    border: 1px solid #ddd;
     border-radius: 10px;
-    padding: 10px;
-    border: 1px solid #ced4da;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-primary {
-    background-color: #007bff;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    transition: all 0.3s;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
+.shop-card:hover {
     transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Shop Card Styling */
-.card {
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-}
-
-.card-text {
-    font-size: 0.9rem;
-    color: #6c757d;
-}
-
-/* Image Styling: Ensure same size for all images */
 .card-img-top {
     height: 200px;
-    /* Fixed height */
     object-fit: cover;
-    /* Ensure images fit within the height */
-    border-radius: 15px 15px 0 0;
-}
-
-/* Row and Grid Styling */
-.row.g-4 {
-    margin-top: 30px;
-}
-
-.col-lg-3,
-.col-md-6 {
-    display: flex;
-    justify-content: center;
+    border-bottom: 2px solid #254D32;
 }
 
 .card-body {
@@ -98,48 +38,72 @@ h3 {
     padding: 15px;
 }
 
-/* Footer Styling (Optional) */
-footer {
-    text-align: center;
-    padding: 20px;
-    margin-top: 50px;
-    background-color: #007bff;
-    color: white;
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-text {
     font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: #6c757d;
 }
 
-/* Card styling */
-.shop-card {
-    position: relative;
-    transition: transform 0.3s, box-shadow 0.3s;
-    overflow: hidden;
+/* Buttons */
+.btn-primary {
+    background-color: #254D32;
+    border-color: #254D32;
 }
 
-.shop-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+.btn-primary:hover {
+    background-color: #1e3f29;
+    border-color: #1e3f29;
 }
 
-/* Favorite star icon */
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #254D32;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+}
+
+/* Favorite Icon */
 .favorite-icon {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 15px;
     font-size: 1.5rem;
-    color: #ffd700;
-    /* Gold color for the star */
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    padding: 5px;
-    display: none;
+    color: #254D32;
     cursor: pointer;
-    transition: all 0.3s;
-}
-
-.shop-card:hover .favorite-icon {
-    display: block;
+    transition: color 0.3s ease;
 }
 
 .favorite-icon:hover {
-    transform: scale(1.2);
+    color: #ffc107;
+}
+
+/* Modal Styles */
+.modal-header {
+    background-color: #254D32;
+    color: white;
+}
+
+.modal-footer .btn-primary {
+    background-color: #254D32;
+    border-color: #254D32;
+}
+
+.modal-footer .btn-primary:hover {
+    background-color: #1e3f29;
+    border-color: #1e3f29;
 }
