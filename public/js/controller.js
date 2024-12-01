@@ -112,6 +112,20 @@ app.controller('AuthController', function ($scope, $http) {
 });
 
 app.controller("HomeController", ["$scope", "$http", "$location", function ($scope, $http, $location) {
+    document.addEventListener("DOMContentLoaded", () => {
+        const elements = document.querySelectorAll('.fade-in, .slide-up');
+        
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        });
+    
+        elements.forEach(el => observer.observe(el));
+    });
+    
     // Check role and redirect if not logged in
     var role = sessionStorage.getItem("role");
     $scope.role = role;
@@ -241,8 +255,14 @@ app.controller("HomeController", ["$scope", "$http", "$location", function ($sco
 }]);
 
 
-app.controller('SustainableController', ['$scope', function($scope) {
-    $scope.message = 'Welcome to the Sustainable Fashion page!';
+app.controller('SustainableController', ['$scope', '$timeout', function($scope, $timeout) {
+    // Initialize the carousel once the DOM is fully loaded
+    $timeout(function() {
+        var myCarousel = new bootstrap.Carousel(document.getElementById('carouselExample'), {
+            interval: 2000,
+            wrap: true
+        });
+    }, 0);
 }]);
 
 app.controller('FashionController', ['$scope', function($scope) {
@@ -250,6 +270,21 @@ app.controller('FashionController', ['$scope', function($scope) {
 }]);
 
 app.controller('EventsController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+    document.addEventListener("DOMContentLoaded", () => {
+        const elements = document.querySelectorAll('.fade-in, .slide-up, .slide-right, .slide-left');
+        
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                    observer.unobserve(entry.target); // Stop observing once animation is triggered
+                }
+            });
+        });
+    
+        elements.forEach(el => observer.observe(el));
+    });    
+    
     $scope.events = [];
     $scope.userEmail = ''; // Initialize userEmail
 
