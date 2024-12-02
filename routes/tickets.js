@@ -61,4 +61,36 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Sign up for an event
+router.post('/:id/signup', async (req, res) => {
+    const ticketId = req.params.id;
+    const userEmail = req.body.email;
+
+    console.log('Received signup request for ticket ID:', ticketId, 'with email:', userEmail);
+
+    try {
+        const ticket = await Tickets.findById(ticketId);
+        if (!ticket) {
+            console.error('Event not found for ID:', ticketId);
+            return res.status(404).send({ error: 'Event not found' });
+        }
+
+        // Check if the user is already signed up
+        if (ticket.users.includes(userEmail)) {
+            console.warn('User  already signed up:', userEmail);
+            return res.status(400).send({ error: 'You are already signed up for this event.' });
+        }
+
+        // Add the user email to the ticket's users array
+        ticket.users.push(userEmail);
+        await ticket.save();
+
+        console.log('Successfully signed up user:', userEmail);
+        res.status(200).send({ message: 'Successfully signed up for the event' });
+    } catch (error) {
+        console.error('Error signing up for event:', error);
+        res.status(500).send({ error: 'Failed to sign up for the event' });
+    }
+});
+
 module.exports = router;
