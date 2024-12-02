@@ -316,12 +316,15 @@ app.controller('EventsController', ['$scope', '$http', '$location', function ($s
             alert('You need to be logged in to sign up for an event.');
             return;
         }
-
-        $http.post(`/api/tickets/${id}/signup`, { email: $scope.userEmail }).then(() => {
-            alert('You successfully signed up for the event!');
-        }).catch(err => {
-            alert(err.data.error || 'Failed to sign up. Try again later.');
-        });
+    
+        $http.post(`/api/tickets/${id}/signup`, { email: $scope.userEmail })
+            .then(() => {
+                alert('You successfully signed up for the event!');
+            })
+            .catch(err => {
+                console.error('Error during signup:', err); // Log the error for debugging
+                alert(err.data.error || 'Failed to sign up. Try again later.');
+            });
     };
 }]);
 
