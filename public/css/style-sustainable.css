@@ -105,30 +105,19 @@ section {
 
 /* Services */
 
-/* FAQ */
-.faq-box .accordion-button::after {
-    background-color: white;
-    border-radius: 100%;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
-/* FAQ */
 
-/* Footer */
-.footer {
-    margin-top: 100px;
-    padding-bottom: 20px;
+[data-aos="fade-up"] {
+    animation: fadeIn 1s ease-in-out;
 }
 
-.footer-box .row .col:nth-child(2) a {
-    opacity: 75%;
-}
 
-.footer-box .row .col:nth-child(2) a:hover {
-    opacity: 100%;
-}
-
-.copyright {
-    margin-top: 100px;
-}
-
-/* Footer */
