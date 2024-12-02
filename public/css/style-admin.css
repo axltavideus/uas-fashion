@@ -76,6 +76,19 @@ h1 {
     margin-bottom: 15px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.event-details {
+    margin-right: 15px; /* Adds spacing between text and image */
+}
+
+.event-image img {
+    max-width: 100px;
+    height: auto;
+    object-fit: cover; /* Ensures the image is properly cropped if needed */
 }
 
 .event-card:hover {

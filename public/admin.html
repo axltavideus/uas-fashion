@@ -27,7 +27,7 @@
         </div>
         <div class="form-group">
             <label for="eventTime">Time</label>
-            <input type="text" id="eventTime" class="form-control" placeholder="Time" ng-model="newEvent.time" required>
+            <input type="time" id="eventTime" class="form-control" ng-model="newEvent.time" required>
         </div>
         <div class="form-group">
             <label for="eventDescription">Description</label>
@@ -40,26 +40,45 @@
         <button type="submit" class="mt-3 btn btn-primary">Add Event</button>
     </form>
 
+    <h1 class="my-4">Available Events</h1>
+
+    <!-- Search Input -->
+    <div class="mb-3">
+        <input type="text" ng-model="searchQuery" placeholder="Search events..." class="form-control" />
+    </div>
+
+    <!-- Sort Options -->
+    <div class="mb-3">
+        <label for="sortOptions">Sort by:</label>
+        <select ng-model="sortBy" class="form-control" id="sortOptions">
+            <option value="name">Name</option>
+            <option value="time">Time</option>
+            <option value="location">Location</option>
+        </select>
+    </div>
+
     <!-- Event List -->
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Event List</h5>
             <div class="event-cards">
-                <div class="event-card mb-3 border p-3" ng-repeat="event in events">
-                    <h3>{{ event.name }}</h3>
-                    <p>{{ event.description }}</p>
-                    <p><strong>Location:</strong> {{ event.location }}</p>
-                    <p><strong>Time:</strong> {{ event.time }}</p>
-                    <img ng-if="event.image" ng-src="{{ event.image }}" alt="{{ event.name }}" style="width: 100px; height: auto;" />
-                    <div class="float-right">
+                <div class="event-card mb-3 border p-3 d-flex align-items-center" ng-repeat="event in filteredEvents = (events | filter:searchQuery | orderBy:sortBy)">
+                    <div class="event-details flex-grow-1">
+                        <h3>{{ event.name }}</h3>
+                        <p>{{ event.description }}</p>
+                        <p><strong>Location:</strong> {{ event.location }}</p>
+                        <p><strong>Time:</strong> {{ event.time | date:'HH:mm' }}</p>
                         <button class="btn btn-warning btn-sm" ng-click="openEditEventModal(event)">Edit</button>
                         <button class="btn btn-danger btn-sm" ng-click="deleteEvent(event._id)">Delete</button>
+                    </div>
+                    <div class="event-image">
+                        <img ng-if="event.image" ng-src="{{ event.image }}" alt="{{ event.name }}" style="width: 100px; height: auto;" />
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <!-- Edit Account Modal -->
     <div class="modal fade" id="editAccountModal" tabindex="-1" role="dialog" aria-labelledby="editAccountModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -109,7 +128,7 @@
                         </div>
                         <div class="form-group">
                             <label for="editEventTime">Time</label>
-                            <input type="text" id="editEventTime" class="form-control" ng-model="selectedEvent.time" required>
+                            <input type="time" id="editEventTime" class="form-control" ng-model="selectedEvent.time" required>
                         </div>
                         <div class="form-group">
                             <label for="editEventDescription">Description</label>
