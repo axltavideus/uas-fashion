@@ -52,8 +52,8 @@
         <label for="sortOptions">Sort by:</label>
         <select ng-model="sortBy" class="form-control" id="sortOptions">
             <option value="name">Name</option>
-            <option value="time">Time</option>
             <option value="location">Location</option>
+            <option value="latestUpdated">Latest Updated</option>
         </select>
     </div>
 
@@ -67,9 +67,11 @@
                         <h3>{{ event.name }}</h3>
                         <p>{{ event.description }}</p>
                         <p><strong>Location:</strong> {{ event.location }}</p>
-                        <p><strong>Time:</strong> {{ event.time | date:'HH:mm' }}</p>
+                        <p><strong>Time:</strong> {{ formatEventTime(event.time) }}</p>
                         <button class="btn btn-warning btn-sm" ng-click="openEditEventModal(event)">Edit</button>
                         <button class="btn btn-danger btn-sm" ng-click="deleteEvent(event._id)">Delete</button>
+                        <!-- Button to show users signed up for this event -->
+                        <button type="button" class="btn btn-primary btn-sm" ng-click="showEventUsers(event)">View Users</button>
                     </div>
                     <div class="event-image">
                         <img ng-if="event.image" ng-src="{{ event.image }}" alt="{{ event.name }}" style="width: 100px; height: auto;" />
@@ -85,6 +87,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editAccountModalLabel">Edit Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
@@ -103,6 +106,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" ng-click="saveAccountChanges()">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -115,6 +119,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editEventModalLabel">Edit Event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -142,8 +147,35 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" ng-click="saveEventChanges()">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Event Users Modal -->
+    <div class="modal fade" id="eventUsersModal" tabindex="-1" aria-labelledby="eventUsersModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventUsersModalLabel">Users Signed Up for {{selectedEvent.name}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="user in selectedEvent.users">
+                            {{user}}
+                        </li>
+                    </ul>
+                    <div ng-if="!selectedEvent.users || selectedEvent.users.length === 0">
+                        <p>No users have signed up for this event.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

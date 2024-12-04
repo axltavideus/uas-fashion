@@ -305,241 +305,311 @@ app.controller("FashionController", [
     }
 ]);
 
-app.controller("EventsController", [
-    "$scope",
-    "$http",
-    "$location",
-    function ($scope, $http, $location) {
-        document.addEventListener("DOMContentLoaded", () => {
-            const elements = document.querySelectorAll(".fade-in, .slide-up, .slide-right, .slide-left");
+app.controller("EventsController", ["$scope", "$http", "$location", function ($scope, $http, $location) {
+    document.addEventListener("DOMContentLoaded", () => {
+        const elements = document.querySelectorAll(".fade-in, .slide-up, .slide-right, .slide-left");
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("animate");
-                        observer.unobserve(entry.target); // Stop observing once animation is triggered
-                    }
-                });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("animate");
+                    observer.unobserve(entry.target); // Stop observing once animation is triggered
+                }
             });
-
-            elements.forEach((el) => observer.observe(el));
         });
 
-        $scope.events = [];
-        $scope.userEmail = ""; // Initialize userEmail
-        $scope.searchQuery = ""; // Initialize search query
-        $scope.sortBy = "name"; // Default sort option
+        elements.forEach((el) => observer.observe(el));
+    });
 
-        // Fetch user email from sessionStorage
-        const userData = sessionStorage.getItem("user"); // Assuming user data is stored here
-        if (userData) {
-            try {
-                const user = JSON.parse(userData);
-                $scope.userEmail = user.email; // Get the email from user data
-            } catch (error) {
-                console.error("Error parsing user data:", error);
-                $scope.userEmail = ""; // Reset if there's an error
-            }
-        } else {
-            console.warn("User  data not found in session storage.");
-            $scope.userEmail = ""; // Reset if user data is not found
+    $scope.events = [];
+    $scope.userEmail = ""; // Initialize userEmail
+    $scope.searchQuery = ""; // Initialize search query
+    $scope.sortBy = "name"; // Default sort option
+
+    // Fetch user email from sessionStorage
+    const userData = sessionStorage.getItem("user"); // Assuming user data is stored here
+    if (userData) {
+        try {
+            const user = JSON.parse(userData);
+            $scope.userEmail = user.email; // Get the email from user data
+        } catch (error) {
+            console.error("Error parsing user data:", error);
+            $scope.userEmail = ""; // Reset if there's an error
         }
-
-        // Fetch events
-        $http
-            .get("/api/tickets")
-            .then((response) => {
-                $scope.events = response.data;
-            })
-            .catch((err) => {
-                console.error("Failed to fetch events:", err);
-            });
-
-        // Sign up for an event
-        $scope.signUp = function (id) {
-            if (!$scope.userEmail) {
-                alert("You need to be logged in to sign up for an event.");
-                return;
-            }
-
-            $http
-                .post(`/api/tickets/${id}/signup`, {email: $scope.userEmail})
-                .then(() => {
-                    alert("You successfully signed up for the event!");
-                })
-                .catch((err) => {
-                    console.error("Error during signup:", err); // Log the error for debugging
-                    alert(err.data.error || "Failed to sign up. Try again later.");
-                });
-        };
+    } else {
+        console.warn("User data not found in session storage.");
+        $scope.userEmail = ""; // Reset if user data is not found
     }
-]);
 
-app.controller("AdminController", [
-    "$scope",
-    "$http",
-    "$location",
-    "Upload",
-    function ($scope, $http, $location, Upload) {
-        var role = sessionStorage.getItem("role");
-        $scope.role = role;
+    // Fetch events
+    $http
+        .get("/api/tickets")
+        .then((response) => {
+            console.log("Fetched events:", response.data); // Log data to inspect the time format
+            $scope.events = response.data;
+        })
+        .catch((err) => {
+            console.error("Failed to fetch events:", err);
+            alert("Failed to fetch events.");
+        });
 
-        if (role !== "admin") {
-            $location.path("/login");
+    // Function to parse the event time string
+    function parseEventTime(timeString) {
+        // Use a regex to extract the time (HH:mm:ss)
+        const match = timeString.match(/(\d{2}:\d{2}:\d{2})/);
+        if (match && match[1]) {
+            return `1970-01-01T${match[1]}Z`; // Use UTC as the fallback
+        }
+        console.error("Invalid time format:", timeString);
+        return null; // Return null for invalid formats
+    }
+
+    // Format event time to HH:mm AM/PM format
+    $scope.formatEventTime = function (time) {
+        const parsedTime = parseEventTime(time);
+        if (!parsedTime) return "Invalid Time";
+
+        const date = new Date(parsedTime);
+        if (isNaN(date.getTime())) return "Invalid Time";
+
+        const hours = date.getUTCHours();
+        const minutes = date.getUTCMinutes();
+        const period = hours >= 12 ? "PM" : "AM";
+        const adjustedHours = hours % 12 || 12;
+
+        return `${String(adjustedHours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${period}`;
+    };
+
+    // Sign up for an event
+    $scope.signUp = function (id) {
+        if (!$scope.userEmail) {
+            alert("You need to be logged in to sign up for an event.");
+            return;
         }
 
-        // Accounts and events data
-        $scope.accounts = [];
-        $scope.events = [];
-        $scope.newEvent = {};
-        $scope.selectedEvent = {}; // For the event modal
-        $scope.selectedAccount = {}; // For the account modal
-        $scope.searchQuery = ""; // Initialize search query
-        $scope.sortBy = "name"; // Default sort option
-
-        // Fetch accounts
         $http
-            .get("/api/accounts")
-            .then((response) => {
-                console.log(response.data); // Log the response data
-                $scope.accounts = response.data;
+            .post(`/api/tickets/${id}/signup`, { email: $scope.userEmail })
+            .then(() => {
+                alert("You successfully signed up for the event!");
             })
             .catch((err) => {
-                console.error("Failed to fetch accounts:", err);
-                alert("Failed to fetch accounts.");
+                console.error("Error during signup:", err); // Log the error for debugging
+                alert(err.data.error || "Failed to sign up. Try again later.");
             });
+    };
+}]);
 
-        $scope.openEditAccountModal = function (account) {
-            $scope.selectedAccount = angular.copy(account);
-            $("#editAccountModal").modal("show");
-        };
 
-        $scope.saveAccountChanges = function () {
-            $http
-                .put(`/api/accounts/${$scope.selectedAccount._id}`, $scope.selectedAccount)
-                .then((response) => {
-                    const index = $scope.accounts.findIndex((account) => account._id === response.data._id);
-                    if (index !== -1) {
-                        $scope.accounts[index] = response.data; // Update the account in the list
-                    }
-                    $scope.selectedAccount = {}; // Reset the selected account
-                    $("#editAccountModal").modal("hide"); // Hide the modal after saving changes
-                })
-                .catch((err) => {
-                    alert(err.data.error || "Failed to update account");
-                });
-        };
+app.controller("AdminController", ["$scope", "$http", "$location", "Upload", function ($scope, $http, $location, Upload) {
+    var role = sessionStorage.getItem("role");
+    $scope.role = role;
 
-        // Fetch events
+    if (role !== "admin") {
+        $location.path("/login");
+    }
+
+    // Accounts and events data
+    $scope.accounts = [];
+    $scope.events = [];
+    $scope.newEvent = {};
+    $scope.selectedEvent = {}; // For the event modal
+    $scope.selectedAccount = {}; // For the account modal
+    $scope.searchQuery = ""; // Initialize search query
+    $scope.sortBy = "latestUpdated"; // Default sort option
+    $scope.sortOptions = ["name", "latestUpdated"]; // Define sort options
+
+    // Fetch accounts
+    $http
+        .get("/api/accounts")
+        .then((response) => {
+            console.log(response.data); // Log the response data
+            $scope.accounts = response.data;
+        })
+        .catch((err) => {
+            console.error("Failed to fetch accounts:", err);
+            alert("Failed to fetch accounts.");
+        });
+
+    $scope.openEditAccountModal = function (account) {
+        $scope.selectedAccount = angular.copy(account);
+        $("#editAccountModal").modal("show");
+    };
+
+    $scope.saveAccountChanges = function () {
         $http
-            .get("/api/tickets")
+            .put(`/api/accounts/${$scope.selectedAccount._id}`, $scope.selectedAccount)
             .then((response) => {
-                $scope.events = response.data;
-            })
-            .catch((err) => {
-                console.error("Failed to fetch events:", err);
-                alert("Failed to fetch events.");
-            });
-
-        // Add event
-        $scope.addEvent = function () {
-            // Convert the time to UTC if necessary
-            const eventTime = new Date(`1970-01-01T${$scope.newEvent.time}:00Z`).toISOString(); // Convert to UTC
-            Upload.upload({
-                url: "/api/tickets",
-                data: {
-                    name: $scope.newEvent.name,
-                    location: $scope.newEvent.location,
-                    time: eventTime, // Use the converted time
-                    description: $scope.newEvent.description,
-                    image: $scope.newEvent.image // This will hold the image file
+                const index = $scope.accounts.findIndex((account) => account._id === response.data._id);
+                if (index !== -1) {
+                    $scope.accounts[index] = response.data; // Update the account in the list
                 }
+                $scope.selectedAccount = {}; // Reset the selected account
+                $("#editAccountModal").modal("hide"); // Hide the modal after saving changes
             })
-                .then((response) => {
-                    $scope.events.push(response.data);
-                    $scope.newEvent = {}; // Reset the form
-                })
-                .catch((err) => {
-                    alert(err.data.error || "Failed to add event");
-                });
-        };
+            .catch((err) => {
+                alert(err.data.error || "Failed to update account");
+            });
+    };
 
-        // Open edit event modal
-        $scope.openEditEventModal = function (event) {
-            $scope.selectedEvent = angular.copy(event); // Copy the event data to the selectedEvent for editing
-            $("#editEventModal").modal("show"); // Show the modal
-        };
+    // Fetch events
+    $http
+        .get("/api/tickets")
+        .then((response) => {
+            $scope.events = response.data;
+            $scope.sortEvents(); // Sort events after fetching
+        })
+        .catch((err) => {
+            console.error("Failed to fetch events:", err);
+            alert("Failed to fetch events.");
+        });
 
-        $scope.saveEventChanges = function () {
-            $scope.updateEvent(); // Call the update function
+    // Function to sort events based on the selected criteria
+    $scope.sortEvents = function () {
+        if ($scope.sortBy === "latestUpdated") {
+            $scope.events.sort((a, b) => {
+                // Assuming 'updatedAt' is the field that holds the last updated timestamp
+                return new Date(b.updatedAt) - new Date(a.updatedAt);
+            });
+        } else if ($scope.sortBy === "name") {
+            $scope.events.sort((a, b) => {
+                return a.name.localeCompare(b.name);
+            });
+        }
+    };
+
+    // Show users signed up for an event
+    $scope.showEventUsers = function (event) {
+        $scope.selectedEvent = event; // Store the selected event
+        $("#eventUsersModal").modal("show"); // Show the modal
+    };
+
+    // Watch for changes in sortBy and re-sort events
+    $scope.$watch('sortBy', function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+            $scope.sortEvents();
+        }
+    });
+
+    // Add event
+    $scope.addEvent = function () {
+        // Use the local time (HH:mm) as it is without converting to UTC
+        const eventTime = `1970-01-01T${$scope.newEvent.time}:00`; // Local time, no 'Z' for UTC
+    
+        Upload.upload({
+            url: "/api/tickets",
+            data: {
+                name: $scope.newEvent.name,
+                location: $scope.newEvent.location,
+                time: eventTime, // Use the local time as-is
+                description: $scope.newEvent.description,
+                image: $scope.newEvent.image // This will hold the image file
+            }
+        })
+        .then((response) => {
+            $scope.events.push(response.data);
+            $scope.sortEvents(); // Re-sort after adding a new event
+            $scope.newEvent = {}; // Reset the form
+        })
+        .catch((err) => {
+            alert(err.data.error || "Failed to add event");
+        });
+    };    
+
+    // Open edit event modal
+    $scope.openEditEventModal = function (event) {
+        $scope.selectedEvent = angular.copy(event); // Copy the event data to the selectedEvent for editing
+        $("#editEventModal").modal("show"); // Show the modal
+    };
+
+    $scope.saveEventChanges = function () {
+        $scope.updateEvent(); // Call the update function
+        $("#editEventModal").modal("hide"); // Hide the modal after saving changes
+    };
+
+    // Update event (no UTC conversion)
+    $scope.updateEvent = function () {
+        // Use the local time as-is without converting to UTC
+        const eventTime = `1970-01-01T${$scope.selectedEvent.time}:00`; // Local time, no 'Z' for UTC
+        
+        Upload.upload({
+            url: `/api/tickets/${$scope.selectedEvent._id}`, // Correct endpoint
+            method: "PUT", // Change from POST to PUT
+            data: {
+                name: $scope.selectedEvent.name,
+                location: $scope.selectedEvent.location,
+                time: eventTime, // Use the local time as-is
+                description: $scope.selectedEvent.description,
+                image: $scope.selectedEvent.image // Include the image file if uploaded
+            }
+        })
+        .then((response) => {
+            const index = $scope.events.findIndex((event) => event._id === response.data._id);
+            if (index !== -1) {
+                $scope.events[index] = response.data; // Update the event in the list
+            }
+            $scope.sortEvents(); // Re-sort after updating an event
+            $scope.selectedEvent = {}; // Reset the selected event
             $("#editEventModal").modal("hide"); // Hide the modal after saving changes
-        };
+        })
+        .catch((err) => {
+            alert(err.data.error || "Failed to update event");
+        });
+    };
 
-        // Update event
-        $scope.updateEvent = function () {
-            // Convert the time to UTC if necessary
-            const eventTime = new Date(`1970-01-01T${$scope.selectedEvent.time}:00Z`).toISOString(); // Convert to UTC
-            Upload.upload({
-                url: `/api/tickets/${$scope.selectedEvent._id}`, // Correct endpoint
-                method: "PUT", // Change from POST to PUT
-                data: {
-                    name: $scope.selectedEvent.name,
-                    location: $scope.selectedEvent.location,
-                    time: eventTime, // Use the converted time
-                    description: $scope.selectedEvent.description,
-                    image: $scope.selectedEvent.image // Include the image file if uploaded
-                }
-            })
-                .then((response) => {
-                    const index = $scope.events.findIndex((event) => event._id === response.data._id);
-                    if (index !== -1) {
-                        $scope.events[index] = response.data; // Update the event in the list
-                    }
-                    $scope.selectedEvent = {}; // Reset the selected event
-                    $("#editEventModal").modal("hide"); // Hide the modal after saving changes
+    // Delete event
+    $scope.deleteEvent = function (eventId) {
+        if (confirm("Are you sure you want to delete this event?")) {
+            $http
+                .delete(`/api/tickets/${eventId}`)
+                .then(() => {
+                    $scope.events = $scope.events.filter((event) => event._id !== eventId); // Remove the event from the list
                 })
                 .catch((err) => {
-                    alert(err.data.error || "Failed to update event");
+                    alert("Failed to delete event");
                 });
-        };
+        }
+    };
 
-        // Delete event
-        $scope.deleteEvent = function (eventId) {
-            if (confirm("Are you sure you want to delete this event?")) {
-                $http
-                    .delete(`/api/tickets/${eventId}`)
-                    .then(() => {
-                        $scope.events = $scope.events.filter((event) => event._id !== eventId); // Remove the event from the list
-                    })
-                    .catch((err) => {
-                        alert("Failed to delete event");
-                    });
+    // Delete account
+    $scope.deleteAccount = function (accountId) {
+        if (confirm("Are you sure you want to delete this account? This action cannot be undone.")) {
+            $http
+                .delete(`/api/accounts/${accountId}`)
+                .then(() => {
+                    $scope.accounts = $scope.accounts.filter((account) => account._id !== accountId); // Remove the account from the list
+                    alert("Account deleted successfully!");
+                })
+                .catch((err) => {
+                    alert("Failed to delete account");
+                });
+        }
+    };
+
+    $scope.formatEventTime = function(time) {
+        // Extract the time part (e.g., "21:21:00")
+        var timeMatch = time.match(/(\d{2}:\d{2}:\d{2})/);
+        
+        if (timeMatch) {
+            var timeString = timeMatch[0]; // This will be the time (e.g., "21:21:00")
+            // Convert the time string to a Date object
+            var date = new Date('1970-01-01T' + timeString + 'Z'); // Adding a 'Z' to indicate UTC
+            if (isNaN(date)) {
+                console.error('Invalid Date:', timeString);
+                return 'Invalid Time';
             }
-        };
+            
+            // Format the time as HH:mm
+            var hours = date.getUTCHours().toString().padStart(2, '0');
+            var minutes = date.getUTCMinutes().toString().padStart(2, '0');
+            return hours + ':' + minutes;
+        } else {
+            console.error('Time format is invalid:', time);
+            return 'Invalid Time';
+        }
+    };    
+}]);
 
-        // Delete account
-        $scope.deleteAccount = function (accountId) {
-            if (confirm("Are you sure you want to delete this account? This action cannot be undone.")) {
-                $http
-                    .delete(`/api/accounts/${accountId}`)
-                    .then(() => {
-                        $scope.accounts = $scope.accounts.filter((account) => account._id !== accountId); // Remove the account from the list
-                        alert("Account deleted successfully!");
-                    })
-                    .catch((err) => {
-                        alert("Failed to delete account");
-                    });
-            }
-        };
-    }
-]);
-
-app.controller("LoginController", [
-    "$scope",
-    "$http",
-    "$location",
-    "$window",
-    function ($scope, $http, $location, $window) {
+app.controller("LoginController", ["$scope","$http","$location","$window",function ($scope, $http, $location, $window) {
         $scope.credentials = {
             email: "",
             password: ""
@@ -609,12 +679,7 @@ app.controller("SignupController", function ($scope, $http) {
     };
 });
 
-app.controller("IndexController", [
-    "$scope",
-    "$http",
-    "$location",
-    "$window",
-    function ($scope, $http, $location, $window) {
+app.controller("IndexController", ["$scope","$http","$location","$window",function ($scope, $http, $location, $window) {
         $scope.hideNavbarAndFooter = false;
 
         $scope.$on("$routeChangeSuccess", function () {
