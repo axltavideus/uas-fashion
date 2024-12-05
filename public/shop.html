@@ -33,15 +33,73 @@
     </form>
 </div>
 
+<!-- Sustainable Shopping Tips Section -->
+<section class="sustainable-tips-section my-5 py-5 bg-light rounded shadow-sm">
+    <h3 class="text-center mb-4">How to Choose Sustainable Brands & Products</h3>
+    <div class="row g-4">
+        <!-- Card 1 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="tip-card p-4 text-center rounded shadow-sm bg-white">
+                <i class="fas fa-leaf fa-3x text-success mb-3"></i>
+                <h5 class="tip-title text-dark">Look for Eco-Certifications</h5>
+                <p class="tip-description text-dark">Choose brands that have credible eco-certifications like Fair Trade, Organic, or Carbon Neutral labels. These
+                certifications ensure that the products are made with care for the environment and ethical labor practices.</p>
+            </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="tip-card p-4 text-center rounded shadow-sm bg-white">
+                <i class="fas fa-recycle fa-3x text-info mb-3"></i>
+                <h5 class="tip-title text-dark">Prioritize Recycled & Upcycled Materials</h5>
+                <p class="tip-description text-dark">Sustainable brands often use recycled or upcycled materials. Look for products made from recycled plastics, fabrics, or
+                other upcycled goods, reducing waste and giving new life to materials.</p>
+            </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="tip-card p-4 text-center rounded shadow-sm bg-white">
+                <i class="fas fa-hand-holding-heart fa-3x text-danger mb-3"></i>
+                <h5 class="tip-title text-dark">Support Ethical Labor Practices</h5>
+                <p class="tip-description text-dark">Ensure that the brand treats its workers fairly, offering safe conditions and fair wages. Look for transparency in the
+                supply chain, where companies provide information about where and how their products are made.</p>
+            </div>
+        </div>
+        <!-- Card 4 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="tip-card p-4 text-center rounded shadow-sm bg-white">
+                <i class="fas fa-globe fa-3x text-warning mb-3"></i>
+                <h5 class="tip-title text-dark">Go for Eco-Friendly Packaging</h5>
+                <p class="tip-description text-dark">Opt for brands that use minimal or biodegradable packaging to
+                    reduce waste.</p>
+            </div>
+        </div>
+        <!-- Card 5 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="tip-card p-4 text-center rounded shadow-sm bg-white">
+                <i class="fas fa-tshirt fa-3x text-primary mb-3"></i>
+                <h5 class="tip-title text-dark">Choose Long-Lasting, Timeless Styles</h5>
+                <p class="tip-description text-dark">Invest in clothing that lasts, avoiding fast fashion and trends
+                    that fade quickly.</p>
+            </div>
+        </div>
+        <!-- Card 6 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="tip-card p-4 text-center rounded shadow-sm bg-white">
+                <i class="fas fa-dollar-sign fa-3x text-secondary mb-3"></i>
+                <h5 class="tip-title text-dark">Invest in Quality Over Quantity</h5>
+                <p class="tip-description text-dark">Spend wisely on high-quality items that are durable and will last
+                    longer, reducing consumption.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Affiliated Shops Section -->
 <section class="shop-section">
     <h3 class="text-center mb-4">Our Affiliated Shops</h3>
     <div class="row g-4">
         <div class="col-lg-3 col-md-6" ng-repeat="shop in shops">
-            <div class="card h-100 shop-card">
-                <div class="favorite-icon" ng-click="toggleFavorite(shop)">
-                    <i class="fa" ng-class="shop.isFavorite ? 'fa-star' : 'fa-star-o'"></i>
-                </div>
+            <div class="card h-100 shop-card"> 
                 <img ng-if="shop.image" ng-src="{{ shop.image }}" alt="{{ shop.name }}" class="card-img-top">
                 <div class="card-body">
                     <h5 class="card-title">{{ shop.name }}</h5>
