@@ -276,51 +276,144 @@ app.controller("HomeController", [
         };
 
 
-app.controller('SustainableController', ['$scope', '$timeout', function($scope, $timeout) {
-    // Initialize the carousel once the DOM is fully loaded
-    $timeout(function() {
-        var myCarousel = new bootstrap.Carousel(document.getElementById('carouselExample'), {
-            interval: 2000,
-            wrap: true
-        });
-    }, 0);
-    $scope.quotes = []; // Initialize quotes array
-    $scope.newQuote = { name: "", text: "" }; // Object to store input values
 
-    // Fetch existing quotes from the database
-    $http.get('/api/quotes').then(function (response) {
-        $scope.quotes = response.data; // Update the quotes array with fetched data
-    });
-
-    // Add a new quote
-    $scope.addQuote = function () {
-        $http.post('/api/quotes', $scope.newQuote).then(function (response) {
-            $scope.quotes.push(response.data); // Add the new quote to the array
-            $scope.newQuote = { name: "", text: "" }; // Clear input fields
-        });
-    };
- }]);
          // Initialize sorting variables
         $scope.sortBy = "createdAt"; // Default sort by date
         $scope.reverse = true; // Default to descending order
         // Initialize user data on load
         $scope.init();
     }
+    
 ]);
 
-app.controller("SustainableController", [
-    "$scope",
-    "$timeout",
-    function ($scope, $timeout) {
-        // Initialize the carousel once the DOM is fully loaded
-        $timeout(function () {
-            var myCarousel = new bootstrap.Carousel(document.getElementById("carouselExample"), {
-                interval: 2000,
-                wrap: true
+app.controller('SustainableController', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
+    // Initialize the carousel once the DOM is fully loaded
+    $timeout(function () {
+        var myCarousel = new bootstrap.Carousel(document.getElementById('carouselExample'), {
+            interval: 2000,
+            wrap: true
+        });
+    }, 0);
+
+    // Sorting variables
+    $scope.sortBy = "createdAt"; // Default sort by date
+    $scope.reverse = true; // Default to descending order
+
+    // Initialize quotes array
+    $scope.quotes = [];
+    $scope.newQuote = { name: "", text: "", email: "" };
+
+    // Fetch all quotes
+    $scope.loadQuotes = function () {
+        $http.get('/api/quotes')
+            .then(function (response) {
+                $scope.quotes = response.data;
+            })
+            .catch(function (error) {
+                console.error("Error fetching quotes:", error);
             });
-        }, 0);
+    };
+
+    // Initialize the controller
+    $scope.init = function () {
+        $scope.loadQuotes();
+
+        // Initialize user data
+        const userData = sessionStorage.getItem("user"); // Use sessionStorage consistently
+        if (userData) {
+            try {
+                $scope.user = JSON.parse(userData);
+                console.log("Parsed user data:", $scope.user);
+            } catch (error) {
+                console.error("Error parsing user data:", error);
+                $scope.user = {};
+            }
+        } else {
+            console.warn("User data not found in session storage.");
+            $scope.user = {};
+        }
+    };
+
+    // Add a new quote
+    $scope.addQuote = function () {
+        if (!$scope.newQuote.name || !$scope.newQuote.text) {
+            alert("Both name and text are required.");
+            return;
+        }
+
+        // Tambahkan email dari user yang login
+        $scope.newQuote.email = $scope.user.email;
+
+        $http.post('/api/quotes', $scope.newQuote)
+            .then(function (response) {
+                $scope.quotes.push(response.data); // Tambahkan quote baru ke list
+                $scope.newQuote = { name: "", text: "" }; // Reset form
+            })
+            .catch(function (error) {
+                console.error("Error adding quote:", error);
+            });
+    };
+
+    // Start editing a quote
+$scope.editQuote = function (quote) {
+    quote.isEditing = true; // Enable editing mode
+    quote.original = angular.copy(quote); // Backup the original quote
+};
+
+    // Save the edited quote
+    $scope.saveEdit = function (quote) {
+        const updatedQuote = {
+            name: quote.name,
+            text: quote.text,
+            email: $scope.user.email, // Ensure the email remains consistent
+        };
+
+        $http.put(`/api/quotes/${quote._id}`, updatedQuote)
+            .then(function (response) {
+                quote.isEditing = false; // Exit editing mode
+                alert("Quote updated successfully.");
+            })
+            .catch(function (error) {
+                console.error("Error updating quote:", error);
+                alert("Failed to update the quote.");
+            });
+    };
+
+    // Cancel editing and restore the original quote
+    $scope.cancelEdit = function (quote) {
+        angular.extend(quote, quote.original); // Restore original data
+        delete quote.isEditing; // Exit editing mode
+        delete quote.original; // Remove backup
+    };
+
+
+    // Delete a quote
+    $scope.deleteQuote = function (quoteId, quoteEmail) {
+
+        if (confirm("Are you sure you want to delete this quote?")) {
+            $http.delete(`/api/quotes/${quoteId}`)
+                .then(function () {
+                    $scope.quotes = $scope.quotes.filter(q => q._id !== quoteId); // Remove deleted quote
+                })
+                .catch(function (error) {
+                    console.error("Error deleting quote:", error);
+                });
+        }
+    };
+
+    // Call initialization
+    $scope.init();
+    function scrollToSection(id) {
+    var element = document.getElementById(id);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-]);
+}
+
+}]);
+
+
+
 
 app.controller("FashionController", [
     "$scope",
