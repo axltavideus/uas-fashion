@@ -178,3 +178,40 @@ h1, h3 {
         font-size: 0.8rem;
     }
 }
+
+.tip-card .tip-title {
+    font-weight: normal;
+    /* Default weight */
+    color: #28a745;
+    /* Default color */
+    transition: color 0.5s ease, font-weight 0.3s ease;
+}
+
+.tip-card:hover .tip-title {
+    color: #28a745;
+    /* Green color on hover */
+    font-weight: bold;
+    /* Make the text bold on hover */
+}
+
+.tip-card:hover {
+    background-color: #28a745;
+    /* Green background color on hover */
+    color: white;
+    /* Change text color to white */
+    transform: scale(1.05);
+    /* Slightly increase size */
+}
+
+.tip-card:hover i {
+    transform: scale(1.2);
+    /* Enlarge icon on hover */
+    color: white;
+    /* Change icon color to white */
+}
+
+.tip-card:hover .tip-title,
+.tip-card:hover .tip-description {
+    color: white;
+    /* Change text color to white on hover */
+}
