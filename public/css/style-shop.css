@@ -1,25 +1,58 @@
 /* General Styles */
 body {
+    font-family: 'Arial', sans-serif;
     background-color: #f9f9f9;
     color: #254D32;
 }
 
 .container {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 h1, h3 {
     color: #254D32;
+    font-weight: bold;
+}
+
+/* Add Shop Section */
+.add-shop-section {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-shop-section h3 {
+    font-size: 1.5rem;
+    color: #254D32;
+    margin-bottom: 15px;
+}
+
+.add-shop-section .form-label {
+    font-weight: bold;
+    color: #254D32;
+}
+
+.add-shop-section .form-control {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+.add-shop-section .form-control:focus {
+    border-color: #254D32;
+    box-shadow: none;
 }
 
 /* Shop Card */
 .shop-card {
-    border: 1px solid #ddd;
+    border: none;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
 }
 
 .shop-card:hover {
@@ -30,18 +63,19 @@ h1, h3 {
 .card-img-top {
     height: 200px;
     object-fit: cover;
-    border-bottom: 2px solid #254D32;
+    border-bottom: 3px solid #254D32;
 }
 
 .card-body {
     text-align: center;
-    padding: 15px;
+    padding: 20px;
 }
 
 .card-title {
     font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 10px;
+    color: #254D32;
 }
 
 .card-text {
@@ -51,9 +85,17 @@ h1, h3 {
 }
 
 /* Buttons */
+.btn {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .btn-primary {
     background-color: #254D32;
     border-color: #254D32;
+    color: #fff;
 }
 
 .btn-primary:hover {
@@ -67,14 +109,20 @@ h1, h3 {
     color: #254D32;
 }
 
+.btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #e0a800;
+}
+
 .btn-danger {
     background-color: #dc3545;
     border-color: #dc3545;
+    color: #fff;
 }
 
-.btn {
-    font-size: 0.9rem;
-    padding: 8px 15px;
+.btn-danger:hover {
+    background-color: #bd2130;
+    border-color: #bd2130;
 }
 
 /* Favorite Icon */
@@ -106,4 +154,27 @@ h1, h3 {
 .modal-footer .btn-primary:hover {
     background-color: #1e3f29;
     border-color: #1e3f29;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .add-shop-section {
+        padding: 15px;
+    }
+
+    .shop-card {
+        margin-bottom: 20px;
+    }
+
+    .card-img-top {
+        height: 150px;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .card-text {
+        font-size: 0.8rem;
+    }
 }
