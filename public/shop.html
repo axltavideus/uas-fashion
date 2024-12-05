@@ -1,36 +1,41 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" type="text/css" href="css/style-shop.css">
 
-<div class="container">
-    <h1 class="text-center">Shop Management</h1>
-    <div ng-hide="role === 'user'">
-        <h3>Add a Shop</h3>
-        <form ng-submit="addShop()">
-            <div class="mb-3">
+<!-- Add Shop Section (Visible only for admins) -->
+<div ng-hide="role === 'user'" class="add-shop-section mb-5 p-4 rounded shadow-sm bg-white">
+    <h3 class="text-center mb-4">Add a Shop</h3>
+    <form ng-submit="addShop()">
+        <div class="row g-3">
+            <div class="col-md-6">
                 <label for="name" class="form-label">Shop Name</label>
                 <input type="text" id="name" class="form-control" ng-model="newShop.name" required>
             </div>
-            <div class="mb-3">
+            <div class="col-md-6">
                 <label for="image" class="form-label">Image</label>
                 <input type="file" id="image" class="form-control" ngf-select ng-model="newShop.image" required>
             </div>
-            <div class="mb-3">
+            <div class="col-md-12">
                 <label for="description" class="form-label">Description</label>
                 <textarea id="description" class="form-control" ng-model="newShop.description" required></textarea>
             </div>
-            <div class="mb-3">
+            <div class="col-md-6">
                 <label for="location" class="form-label">Location</label>
                 <input type="text" id="location" class="form-control" ng-model="newShop.location" required>
             </div>
-            <div class="mb-3">
+            <div class="col-md-6">
                 <label for="link" class="form-label">Shop Link</label>
                 <input type="url" id="link" class="form-control" ng-model="newShop.link" required>
             </div>
+        </div>
+        <div class="text-center mt-4">
             <button type="submit" class="btn btn-primary">Add Shop</button>
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
 
-    <h3 class="mt-5">Our affliated Shops</h3>
+<!-- Affiliated Shops Section -->
+<section class="shop-section">
+    <h3 class="text-center mb-4">Our Affiliated Shops</h3>
     <div class="row g-4">
         <div class="col-lg-3 col-md-6" ng-repeat="shop in shops">
             <div class="card h-100 shop-card">
@@ -42,49 +47,53 @@
                     <h5 class="card-title">{{ shop.name }}</h5>
                     <p class="card-text">{{ shop.description }}</p>
                     <p class="card-text"><small class="text-muted">Location: {{ shop.location }}</small></p>
-                    <a href="{{ shop.link }}"><button class="btn btn-primary mt-3">Kunjungi Shop</button></a>
-                    <button class="btn btn-warning mt-3" ng-click="openEditShopModal(shop)" ng-hide="role === 'user'">Edit</button>
-                    <button class="btn btn-danger mt-3" ng-click="deleteShop(shop._id)" ng-hide="role === 'user'">Delete</button>
+                    <a href="{{ shop.link }}" target="_blank">
+                        <button class="btn btn-primary mt-3">Visit Shop</button>
+                    </a>
+                    <div ng-hide="role === 'user'">
+                        <button class="btn btn-warning mt-3" ng-click="openEditShopModal(shop)">Edit</button>
+                        <button class="btn btn-danger mt-3" ng-click="deleteShop(shop._id)">Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- Edit Shop Modal -->
-    <div class="modal fade" id="editShopModal" tabindex="-1" role="dialog" aria-labelledby="editShopModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editShopModalLabel">Edit Shop</h5>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="editShopName" class="form-label">Shop Name</label>
-                            <input type="text" id="editShopName" class="form-control" ng-model="selectedShop.name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editShopImage" class="form-label">Image</label>
-                            <input type="file" id="editShopImage" class="form-control" ngf-select ng-model="selectedShop.image">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editShopDescription" class="form-label">Description</label>
-                            <textarea id="editShopDescription" class="form-control" ng-model="selectedShop.description" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editShopLocation" class="form-label">Location</label>
-                            <input type="text" id="editShopLocation" class="form-control" ng-model="selectedShop.location" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editShopLink" class="form-label">Shop Link</label>
-                            <input type="url" id="editShopLink" class="form-control" ng-model="selectedShop.link" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" ng-click="saveShopChanges()">Save changes</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
+</section>
+
+<!-- Edit Shop Modal -->
+<div class="modal fade" id="editShopModal" tabindex="-1" role="dialog" aria-labelledby="editShopModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editShopModalLabel">Edit Shop</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="editShopName" class="form-label">Shop Name</label>
+                        <input type="text" id="editShopName" class="form-control" ng-model="selectedShop.name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editShopImage" class="form-label">Image</label>
+                        <input type="file" id="editShopImage" class="form-control" ngf-select ng-model="selectedShop.image">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editShopDescription" class="form-label">Description</label>
+                        <textarea id="editShopDescription" class="form-control" ng-model="selectedShop.description" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editShopLocation" class="form-label">Location</label>
+                        <input type="text" id="editShopLocation" class="form-control" ng-model="selectedShop.location" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editShopLink" class="form-label">Shop Link</label>
+                        <input type="url" id="editShopLink" class="form-control" ng-model="selectedShop.link" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="saveShopChanges()">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

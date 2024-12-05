@@ -7,6 +7,7 @@
   padding: 0;
   position: relative;
 }
+
 .carousel-control-prev,
 .carousel-control-next {
   position: absolute;
@@ -39,11 +40,50 @@
 .carousel-caption {
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
+
+/* Animasi untuk teks di hero carousel */
+.hero-text h1, .hero-text p {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-in-out;
+}
+
+.carousel-item.active .hero-text h1,
+.carousel-item.active .hero-text p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Animasi untuk gambar di carousel */
+.hero-image img {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.8s ease-in-out;
+}
+
+.carousel-item.active .hero-image img {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Animasi untuk tombol */
+.btn:hover {
+  transform: scale(1.05);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Dekorasi segitiga dengan animasi berdenyut */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
 .triangle-decor {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-style: solid;
+  animation: pulse 2s infinite;
 }
 
 .triangle-decor.top-left {
@@ -74,6 +114,7 @@
   border-color: transparent transparent #3f784c transparent;
 }
 
+/* Animasi untuk section video */
 .video-section {
   background-color: #f8f9fa; /* Warna background abu terang */
   padding: 50px 20px;
@@ -83,6 +124,20 @@
   font-size: 24px;
   font-weight: 700;
   color: #333;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s forwards 0.3s;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .video-section .btn-primary {
