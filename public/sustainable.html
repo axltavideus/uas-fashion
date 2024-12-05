@@ -16,10 +16,9 @@
                         environmental, social, and economic impacts of the clothing industry.
                     </p>
                     <div>
-                        <a href="#services"
-                            class="btn btn-success animate__animated animate__fadeIn animate__delay-3s">Key Topics</a>
-                        <a href="#projects"
-                            class="btn btn-outline-success animate__animated animate__fadeIn animate__delay-4s">Projects!</a>
+                <a href="#services" class="btn btn-success" onclick="event.preventDefault(); scrollToSection('services')">Key Topics</a>
+                <a href="#projects" class="btn btn-outline-success"onclick="event.preventDefault(); scrollToSection('projects')">Projects!</a>
+
                     </div>
                 </div>
                 <div class="box image-box animate__animated animate__fadeInRight animate__delay-1s">
@@ -172,24 +171,53 @@
             </p>
         </blockquote>
 
-        <!-- Form to Add New Quote -->
-        <form ng-submit="addQuote()" class="mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="700">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" ng-model="newQuote.name" placeholder="Your Name" required>
+    <div>
+
+        
+    <!-- Dynamically Loaded Quotes -->
+    <div ng-repeat="quote in quotes" >
+        <blockquote class="blockquote" ng-if="!quote.isEditing">
+            <p class="fst-italic">&ldquo;{{ quote.text }}&rdquo;</p>
+            <footer class="blockquote-footer text-center">{{ quote.name }}</footer>
+        </blockquote>
+
+        <!-- Edit Form -->
+        <form ng-submit="saveEdit(quote)" ng-if="quote.isEditing" class="mb-3">
+            <div class="input-group mb-2">
+                <input type="text" class="form-control" ng-model="quote.name" placeholder="Your Name" required>
             </div>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" ng-model="newQuote.text" placeholder="Enter your quote" required>
+            <div class="input-group mb-2">
+                <textarea class="form-control" ng-model="quote.text" placeholder="Edit your quote" rows="2"
+                    required></textarea>
             </div>
-            <button class="btn btn-success" type="submit">Add Quote</button>
+            <button class="btn btn-success btn-sm me-2" type="submit">Save</button>
+            <button class="btn btn-secondary btn-sm" type="button" ng-click="cancelEdit(quote)">Cancel</button>
         </form>
 
-        <!-- Dynamically Loaded Quotes -->
-        <div ng-repeat="quote in quotes" class="mb-3" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="900">
-            <blockquote class="blockquote text-dark">
-                <p class="fst-italic">{{ quote.text }}</p>
-                <footer class="blockquote-footer">{{ quote.name }}</footer>
-            </blockquote>
+        <!-- Buttons (Hidden for users who didn't create the quote) -->
+        <div class="mt-2 text-end" ng-if="quote.email === user.email && !quote.isEditing">
+            <button class="btn btn-warning btn-sm me-2" ng-click="editQuote(quote)">Edit</button>
+            <button class="btn btn-danger btn-sm" ng-click="deleteQuote(quote._id)">Delete</button>
         </div>
+    </div>
+
+
+    <!-- Form to Add New Quote -->
+    <h1 class="fw-bold mb-4 text-success" data-aos="fade-up" data-aos-duration="1000">
+        Inspire Others
+    </h1>
+    <form ng-submit="addQuote()" class="mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="700">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" ng-model="newQuote.name" placeholder="Your Name" required>
+        </div>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" ng-model="newQuote.text" placeholder="Enter your quote" required>
+        </div>
+        <button class="btn btn-success" type="submit">Add Quote</button>
+    </form>
+
+    </div>
+
 
 <!-- End Quotes -->
 

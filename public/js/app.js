@@ -34,8 +34,13 @@ app.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'events.html',
             controller: 'EventsController',
         })
+        .when('/',{
+            templateUrl: 'home.html',
+            controller: 'HomeController',           
+        })
         .otherwise({
-            redirectTo: '/home' // Redirect to the home page by default
+            redirectTo: '/' // Redirect to the home page by default
         });
+
 }]);
 
