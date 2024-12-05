@@ -263,6 +263,21 @@ app.controller('SustainableController', ['$scope', '$timeout', function($scope, 
             wrap: true
         });
     }, 0);
+    $scope.quotes = []; // Initialize quotes array
+    $scope.newQuote = { name: "", text: "" }; // Object to store input values
+
+    // Fetch existing quotes from the database
+    $http.get('/api/quotes').then(function (response) {
+        $scope.quotes = response.data; // Update the quotes array with fetched data
+    });
+
+    // Add a new quote
+    $scope.addQuote = function () {
+        $http.post('/api/quotes', $scope.newQuote).then(function (response) {
+            $scope.quotes.push(response.data); // Add the new quote to the array
+            $scope.newQuote = { name: "", text: "" }; // Clear input fields
+        });
+    };
 }]);
 
 app.controller('FashionController', ['$scope', function($scope) {
