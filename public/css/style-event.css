@@ -23,6 +23,22 @@
     font-size: 1rem; /* Adjust text size */
 }
 
+.btn-group .btn {
+    border-radius: 50px;
+    padding: 8px 20px;
+    background-color: #254D32; /* Green background */
+}
+
+.btn-primary {
+    background-color: #254D32;
+    border-color: #254D32;
+}
+
+.btn-primary:hover {
+    background-color: #1e3f29;
+    border-color: #1e3f29;
+}
+
 
 /* General animations */
 .fade-in {

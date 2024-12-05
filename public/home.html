@@ -163,10 +163,6 @@
     
         <!-- Review Submission Form -->
         <div class="container mb-5">
-            <div ng-if="alertMessage" class="alert alert-{{alertType}} alert-dismissible fade show" role="alert">
-                {{alertMessage}}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
             <form ng-submit="submitReview()">
                 <div class="card">
                     <div class="card-body">
@@ -191,12 +187,26 @@
         </div>
     </section>
 
+    <div class="container">
+        <div ng-if="alertMessage" class="alert alert-{{alertType}} alert-dismissible fade show" role="alert">
+            {{alertMessage}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+
     <section>
         <div class="container-fluid bawah-container mt-5 ms-5 ps-5">
             <h1 class="ms-5 ps-5 mb-3">Other Reviews</h1>
         </div>
     
         <div class="container">
+            <div class="d-flex justify-content-between mb-1">
+                <input type="text" ng-model="searchText" class="form-control" placeholder="Search reviews...">
+            </div>
+            <div class="btn-group mb-3">
+                <button class="btn btn-success btn-pill" ng-click="sortBy = 'name'; reverse = !reverse">Sort by Name</button>
+                <button class="btn btn-success btn-pill" ng-click="sortBy = 'createdAt'; reverse = !reverse">Sort by Date</button>
+            </div>
             <div class="list-group-item" ng-repeat="review in getPageReviews() | orderBy:'-createdAt'">
                 <div class="card mb-3">
                     <div class="card-header d-flex justify-content-between">

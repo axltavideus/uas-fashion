@@ -93,4 +93,21 @@ router.post('/:id/signup', async (req, res) => {
     }
 });
 
+// Delete a ticket (event)
+router.delete('/:id', async (req, res) => {
+    const ticketId = req.params.id;
+
+    try {
+        const deletedTicket = await Tickets.findByIdAndDelete(ticketId);
+        if (!deletedTicket) {
+            return res.status(404).send({ error: 'Event not found' });
+        }
+        res.status(200).send({ message: 'Event deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting event:', error);
+        res.status(500).send({ error: 'Unable to delete event' });
+    }
+});
+
+
 module.exports = router;
