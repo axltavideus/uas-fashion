@@ -275,10 +275,34 @@ app.controller("HomeController", [
                 });
         };
 
-        // Initialize sorting variables
+
+app.controller('SustainableController', ['$scope', '$timeout', function($scope, $timeout) {
+    // Initialize the carousel once the DOM is fully loaded
+    $timeout(function() {
+        var myCarousel = new bootstrap.Carousel(document.getElementById('carouselExample'), {
+            interval: 2000,
+            wrap: true
+        });
+    }, 0);
+    $scope.quotes = []; // Initialize quotes array
+    $scope.newQuote = { name: "", text: "" }; // Object to store input values
+
+    // Fetch existing quotes from the database
+    $http.get('/api/quotes').then(function (response) {
+        $scope.quotes = response.data; // Update the quotes array with fetched data
+    });
+
+    // Add a new quote
+    $scope.addQuote = function () {
+        $http.post('/api/quotes', $scope.newQuote).then(function (response) {
+            $scope.quotes.push(response.data); // Add the new quote to the array
+            $scope.newQuote = { name: "", text: "" }; // Clear input fields
+        });
+    };
+ }]);
+         // Initialize sorting variables
         $scope.sortBy = "createdAt"; // Default sort by date
         $scope.reverse = true; // Default to descending order
-
         // Initialize user data on load
         $scope.init();
     }
